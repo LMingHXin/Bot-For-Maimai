@@ -23,7 +23,7 @@ class GitRepo():
         self.repo = git.Repo(path)
 
     def pull(self):
-        origin = self.repo.remotes.main
+        origin = self.repo.remotes.origin
         origin.pull()
 
 @update.handle()
