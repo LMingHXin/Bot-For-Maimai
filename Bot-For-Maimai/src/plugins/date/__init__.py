@@ -25,6 +25,7 @@ quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"}, rule=to_me())  #约列表
 date_help = on_command("date_help", priority=4, block=False, aliases={"约帮助", "dhelp"}, rule=to_me())  #教你约！
 date_setting = on_command("date_setting", priority=4, block=False, aliases={"约设置", "dsetting"}, rule=to_me())  #神！权！
+my_date = on_command("my_date", priority=5, block=False, aliases={"我的约会", "mdate", "md"}, rule=to_me())  #我的约会
 
 @date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
@@ -112,15 +113,28 @@ async def handle_first_receive(bot: Bot, event:Event, state: T_State, args: Mess
     await list_date.finish(msg)
     
     
+@my_date.handle()
+async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
+    user_id = event.get_user_id()
+    Rmaindate = maindate.get_user_dates(user_id) # type: ignore
+    if not Rmaindate:
+        await my_date.finish("你还没有参加任何约会喵~快去参加一个吧~")
+    msg = "你参加的约会列表：\n"
+    for date in Rmaindate: # type: ignore
+        msg += f"ID: {date['id']}, 主题: {date['主题']}, 参与人员: {date.get('参与人员', [])}\n"
+    await my_date.finish(msg)
+    
+    
 @date_help.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
     msg = (
         "约会功能使用说明（注意！注意！记得@我哦）：\n"
-        "1. 发起约会（这个不用@我哦）：发送 'date 主题' 创建一个新约会。\n"
-        "2. 参加约会：发送 'join_date 约会ID' 参加指定ID的约会。\n"
-        "3. 退出约会：发送 'quit_date 约会ID' 退出指定ID的约会。\n"
-        "4. 查看约会列表：发送 'list_date' 查看当前群的所有约会。\n"
-        "5. 管理员设置：发送 'date_setting' 进行约会功能的管理设置（仅限管理员）。\n"
+        "1. 发起约会（这个不用@我哦）：发送 '月/约/🈷 主题' 创建一个新约会。\n"
+        "2. 参加约会：发送 'join_date/jdate 约会ID' 参加指定ID的约会。\n"
+        "3. 退出约会：发送 'quit_date/qdate 约会ID' 退出指定ID的约会。\n"
+        "4. 查看约会列表：发送 'list_date/ldate' 查看当前群的所有约会。\n"
+        "5. 查看我的约会：发送 'my_date/mdate/md' 查看你参加的所有约会。\n"
+        "6. 管理员设置：发送 'date_setting/dsetting' 进行约会功能的管理设置（仅限管理员）。\n"
     )
     await date_help.finish(msg)
     
