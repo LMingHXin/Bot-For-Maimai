@@ -33,9 +33,7 @@ async def _(bot: Bot, event: Event, state: T_State):
     if str(usrid) != str(config.master_qq):
         await update.finish(Message("只有主人可以使用此命令"))
     msg = str(event.get_message()).strip()
-    if msg == "":
-        repo = GitRepo(path="/home/sa/Bot-For-Maimai")
-        repo.pull()
-        await update.finish("更新成功，bot在大约30s后即可正常使用")
-    else:
-        await update.finish(None)
+    print(msg)
+    repo = GitRepo(path="/home/sa/Bot-For-Maimai")
+    repo.pull()
+    await update.finish("更新成功，bot在大约30s后即可正常使用")
