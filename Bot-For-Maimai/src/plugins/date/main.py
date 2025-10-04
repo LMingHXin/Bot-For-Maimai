@@ -78,3 +78,5 @@ class maindate():
                         self.user_dates[user_id].remove(date_id)
                 return True
         return False  # 返回False表示未找到
+    
+maindate = maindate()
