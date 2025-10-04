@@ -104,7 +104,6 @@ class maindate():
                 sign = True
             if date["id"] > date_id:
                 date["id"] -= 1
-                continue
         self.date_id -= 1 # type: ignore
         return sign  # 返回False表示未找到
     
