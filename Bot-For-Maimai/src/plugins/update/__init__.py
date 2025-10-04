@@ -39,4 +39,4 @@ async def _(bot: Bot, event: Event, state: T_State):
         repo.pull()
         await update.finish("更新成功，bot在大约30s后即可正常使用")
     else:
-        await update.finish("1")
+        await update.finish(None)
