@@ -46,7 +46,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
 @date.got("confirm", prompt="请确认是否加入已经存在的约会喵~")
 async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
-    msg = event.get_message()
+    msg = str(event.get_message())
     print(msg)
     if msg in {"yes", "y", "是", "对", "好", "参加", "加入"}:
         date_id = state.get("date_id")
