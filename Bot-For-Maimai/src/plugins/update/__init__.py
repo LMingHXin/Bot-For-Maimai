@@ -34,9 +34,9 @@ async def _(bot: Bot, event: Event, state: T_State):
     if msg == "更新":
         usrid = event.get_user_id()
         if int(usrid) not in config.master_qq: # type: ignore
-            await update.finish(Message("只有主人可以使用此命令")) 
+            await update.finish(Message("只有主人可以使用此命令哦~你这个杂鱼~❤")) 
         repo = GitRepo(path="/home/sa/Bot-For-Maimai")
         repo.pull()
-        await update.finish("更新成功，bot在大约30s后即可正常使用")
+        await update.finish("主人主人~，人家马上就更新好了哦~❤\n请主人等人家一分钟哦~❤")
     else:
         await update.finish(None)
