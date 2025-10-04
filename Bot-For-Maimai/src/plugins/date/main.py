@@ -98,7 +98,7 @@ class maindate():
     def delete_date(self, date_id) -> bool:  # 删除约会
         sign :bool = False
         for date in self.date_list: # type: ignore
-            print(f"dateid:{date["id"]}, id:{date_id}")
+            print("dateid:" + date["id"] + "id:" + date_id)
             if date["id"] == date_id:
                 self.date_list.remove(date) # type: ignore
                 sign = True
