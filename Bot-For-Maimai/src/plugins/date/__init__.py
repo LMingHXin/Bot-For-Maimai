@@ -21,7 +21,7 @@ join_date = on_command("join_date", priority=5, block=False, aliases={"参加约
 quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"})  #退出约！
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"})  #约列表
 date_help = on_command("date_help", priority=4, block=True, aliases={"约帮助", "dhelp"})  #教你约！
-date_setting = on_command("date_setting", priority=3, block=True, aliases={"约设置", "dsetting"})  #神！权！
+date_setting = on_command("date_setting", priority=3, block=False, aliases={"约设置", "dsetting"})  #神！权！
 
 @date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State):
@@ -31,13 +31,14 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
         await date.finish("本群未启用约会功能")
     content = str(event.get_message())
     maindate.create_date(user_id, group_id, content)
-    await date.finish(f"约会已创建，主题：{content}")
+    await date.finish(f"约会已创建，主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 参加约会")
     
     
 @join_date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     user_id = event.get_user_id()
     msg = str(event.get_message()).strip()
+    print(msg)
     if not msg.isdigit():
         await join_date.finish("请输入有效的约会ID")
     date_id = int(msg)
