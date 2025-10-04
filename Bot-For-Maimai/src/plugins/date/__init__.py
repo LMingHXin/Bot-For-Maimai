@@ -55,6 +55,7 @@ async def handle_confirm(bot: Bot, event: Event, state: T_State, args: Message =
             await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
     if msg in {"new", "创建新的", "创建新约会", "new date", "n"}:
         content = args.extract_plain_text().strip()
+        print(content)
         if content == "":
             await date.reject("笨蛋~谁知道你要月什么喵~")
         maindate.create_repeat_date(user_id, event.group_id, content) # type: ignore
