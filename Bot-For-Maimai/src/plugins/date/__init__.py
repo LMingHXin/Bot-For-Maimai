@@ -66,7 +66,7 @@ async def handle_first_receive(bot: Bot, event:Event, state: T_State):
     group_id = event.group_id
     if group_id not in config.date_group:
         await list_date.finish("本群未启用约会功能")
-    Rmaindate = maindate.date_list[group_id]
+    Rmaindate = maindate.date_list
     if not Rmaindate:
         await list_date.finish("当前群暂无约会")
     msg = "当前群约会列表：\n"
