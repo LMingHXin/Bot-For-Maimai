@@ -57,6 +57,7 @@ class maindate():
     
     def date_list(self, group_id) -> list:  # 获取群的约会列表
         if group_id in self.group_dates:
+            print(date for date in self.date_list if date["id"] in self.group_dates[group_id])
             return [date for date in self.date_list if date["id"] in self.group_dates[group_id]] # 返回该群的约会列表
         return [] # 返回空列表
     
