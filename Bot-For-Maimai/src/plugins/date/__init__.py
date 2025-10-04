@@ -39,7 +39,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
     if val[0]:
         state["date_id"] = val
         state["context"] = content
-        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new' 创建新的约会~") # type: ignore
+        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val[1:]}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new' 创建新的约会~") # type: ignore
     if not val[0]:
         await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     

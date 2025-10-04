@@ -32,8 +32,7 @@ class maindate():
         if group_id not in self.group_dates:
             self.group_dates[group_id] = []
         self.group_dates[group_id].append(self.date_id)
-        datelist.append("success")
-        return datelist  # 返回success标识符
+        return datelist # 返回约会ID列表
     
     
     def create_repeat_date(self, user_id, group_id, content) -> str:  # 创建约会
