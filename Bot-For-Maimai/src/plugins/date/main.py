@@ -103,7 +103,8 @@ class maindate():
                 sign = True
                 break
         for date in self.date_list: # type: ignore
-            date["id"] -= 1
+            if date["id"] > date_id:
+                date["id"] -= 1 
         self.date_id -= 1 # type: ignore
         return sign  # 返回False表示未找到
     
