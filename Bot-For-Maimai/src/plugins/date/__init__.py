@@ -38,8 +38,8 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
 async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
     msg = str(event.get_message()).split(' ')[1].strip()
-    print(msg[0])
-    if not msg[0].isdigit():
+    print(msg)
+    if not msg.isdigit():
         await join_date.finish("请输入有效的约会ID")
     date_id = int(msg[0])
     if maindate.join_date(user_id, date_id): # type: ignore
@@ -51,7 +51,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
 @quit_date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
-    msg = str(event.get_message()).split(" ").strip() # type: ignore
+    msg = str(event.get_message()).split(" ")[1].strip() # type: ignore
     if not msg.isdigit():
         await quit_date.finish("请输入有效的约会ID, 如 'quit_date 1'")
     date_id = int(msg)
