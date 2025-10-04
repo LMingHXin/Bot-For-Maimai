@@ -24,6 +24,7 @@ class GitRepo():
 
     def pull(self):
         origin = self.repo.remotes.origin
+        self.repo.git.stash()
         origin.pull()
 
 @update.handle()
