@@ -32,6 +32,10 @@ async def _(bot: Bot, event: Event, state: T_State):
     usrid = event.get_user_id()
     if str(usrid) != str(config.master_qq):
         await update.finish(Message("只有主人可以使用此命令"))
-    repo = GitRepo(path="/home/sa/Bot-For-Maimai")
-    repo.pull()
-    await update.finish("更新成功，请重启生效")
+    msg = str(event.get_message()).strip()
+    if msg == "":
+        repo = GitRepo(path="/home/sa/Bot-For-Maimai")
+        repo.pull()
+        await update.finish("更新成功，请重启生效")
+    else:
+        await update.finish(None)
