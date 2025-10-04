@@ -2,6 +2,8 @@ from nonebot import get_plugin_config, on_command, on_message
 from nonebot.plugin import PluginMetadata
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Message, Event, Bot
+from nonebot.rule import to_me
+from nonebot.params import CommandArg
 
 from .config import Config
 from .main import maindate
@@ -16,20 +18,20 @@ __plugin_meta__ = PluginMetadata(
 config = get_plugin_config(Config)
 
 #注册事件响应器
-date = on_command("🈷", priority=5, block=False, aliases={"约", "月"})  #发起约！
-join_date = on_command("join_date", priority=5, block=False, aliases={"参加约", "jdate"})  #参加约！
-quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"})  #退出约！
-list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"})  #约列表
-date_help = on_command("date_help", priority=4, block=False, aliases={"约帮助", "dhelp"})  #教你约！
-date_setting = on_command("date_setting", priority=4, block=False, aliases={"约设置", "dsetting"})  #神！权！
+date = on_command("🈷", priority=5, block=False, aliases={"约", "月"}, rule=to_me())  #发起约！
+join_date = on_command("join_date", priority=5, block=False, aliases={"参加约", "jdate"}, rule=to_me())  #参加约！
+quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"}, rule=to_me())  #退出约！
+list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"}, rule=to_me())  #约列表
+date_help = on_command("date_help", priority=4, block=False, aliases={"约帮助", "dhelp"}, rule=to_me())  #教你约！
+date_setting = on_command("date_setting", priority=4, block=False, aliases={"约设置", "dsetting"}, rule=to_me())  #神！权！
 
 @date.handle()
-async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: ignore
+async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
     user_id = event.get_user_id()
     group_id = event.group_id # type: ignore
     if group_id not in config.date_group: # type: ignore
         await date.finish("笨蛋~这个群不能约会哦~")
-    content = str(event.get_message())[1: ]
+    content = args.extract_plain_text()
     if not content:
         await date.finish("笨蛋~谁知道你要月什么喵~")
     val = maindate.create_date(user_id, group_id, content) # type: ignore
