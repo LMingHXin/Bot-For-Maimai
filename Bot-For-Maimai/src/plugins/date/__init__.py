@@ -1,3 +1,4 @@
+from ast import arg
 from nonebot import get_plugin_config, on_command, on_message
 from nonebot.plugin import PluginMetadata
 from nonebot.typing import T_State
@@ -37,14 +38,16 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
     val = maindate.create_date(user_id, group_id, content) # type: ignore
     if val != "success":
         state["date_id"] = int(val)
-        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new + 新的约会' 创建新的约会~") # type: ignore
+        state["context"] = content
+        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new' 创建新的约会~") # type: ignore
     if val == "success":
         await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     
 @date.got("confirm", prompt="请确认是否加入已经存在的约会喵~")
-async def handle_confirm(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
+async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
-    msg = args.extract_plain_text().strip()
+    msg = event.get_message()
+    print(msg)
     if msg in {"yes", "y", "是", "对", "好", "参加", "加入"}:
         date_id = state.get("date_id")
         if not date_id:
@@ -54,7 +57,7 @@ async def handle_confirm(bot: Bot, event: Event, state: T_State, args: Message =
         else:
             await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
     if msg in {"new", "创建新的", "创建新约会", "new date", "n"}:
-        content = args.extract_plain_text().strip()
+        content = state.get("context")
         print(content)
         if content == "":
             await date.reject("笨蛋~谁知道你要月什么喵~")
