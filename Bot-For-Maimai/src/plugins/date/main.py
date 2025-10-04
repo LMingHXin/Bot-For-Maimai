@@ -15,10 +15,11 @@ class maindate():
         self.date_id += 1
         date = {
             "id": self.date_id,
-            "参与人员": user_id,
+            "参与人员": [],
             "群聊": group_id,
             "主题": content,
         }
+        date["参与人员"].append(user_id)
         self.date_list.append(date)
         if user_id not in self.user_dates:
             self.user_dates[user_id] = []
@@ -59,7 +60,7 @@ class maindate():
         if group_id in self.group_dates:
             print(date for date in self.date_list if date["id"] in self.group_dates[group_id])
             return [date for date in self.date_list if date["id"] in self.group_dates[group_id]] # 返回该群的约会列表
-        return [] # 返回空列表
+        return [] # 返回空值
     
     def get_date(self, date_id) -> dict:  # 获取约会详情
         for date in self.date_list:
