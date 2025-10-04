@@ -56,9 +56,9 @@ class maindate():
         return "success"  # 返回success标识符
     
     
-    def join_date(self, user_id, date_id) -> bool:  # 参加约会
+    def join_date(self, user_id, date_id, group_id) -> bool:  # 参加约会
         for date in self.date_list: # type: ignore
-            if date["id"] == date_id:
+            if date["id"] == date_id and date["群聊"] == group_id:
                 if "参与人员" not in date:
                     date["参与人员"] = []
                 if user_id not in date["参与人员"]:
@@ -71,12 +71,12 @@ class maindate():
                     return False
         return False  
     
-    def quit_date(self, user_id, date_id) -> bool:  # 退出约会
+    def quit_date(self, user_id, date_id, group_id) -> bool:  # 退出约会
         for date in self.date_list: # type: ignore
             if date["id"] == date_id:
                 if "参与人员" in date and user_id in date["参与人员"]:
                     date["参与人员"].remove(user_id)
-                    if user_id in self.user_dates and date_id in self.user_dates[user_id]:
+                    if user_id in self.user_dates and date_id in self.user_dates[user_id] and group_id == date["群聊"]:
                         self.user_dates[user_id].remove(date_id)
                     return True
                 else:

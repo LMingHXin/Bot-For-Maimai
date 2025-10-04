@@ -73,11 +73,12 @@ async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
     user_id = event.get_user_id()
     msg = args.extract_plain_text().strip()
+    group_id = event.group_id # type: ignore
     print(msg)
     if not msg.isdigit():
         await join_date.finish("请输入有效的约会ID")
     date_id = int(msg[0])
-    if maindate.join_date(user_id, date_id): # type: ignore
+    if maindate.join_date(user_id, date_id, group_id): # type: ignore
         await join_date.finish(f"成功参加约会ID {date_id}")
     else:
         await join_date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
@@ -85,12 +86,13 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
         
 @quit_date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
+    group_id = event.group_id # type: ignore
     user_id = event.get_user_id()
     msg = args.extract_plain_text().strip() # type: ignore
     if not msg.isdigit():
         await quit_date.finish("请输入有效的约会ID, 如 'quit_date 1'")
     date_id = int(msg)
-    if maindate.quit_date(user_id, date_id): # type: ignore
+    if maindate.quit_date(user_id, date_id, group_id): # type: ignore
         await quit_date.finish(f"成功退出约会ID {date_id}")
     else:
         await quit_date.finish(f"无法退出约会ID {date_id}，可能未参加或ID无效")
