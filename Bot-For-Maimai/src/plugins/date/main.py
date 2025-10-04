@@ -1,7 +1,4 @@
-from nonebot import get_plugin_config, on_command, on_message
-from nonebot.plugin import PluginMetadata
-from nonebot.typing import T_State
-from nonebot.adapters.onebot.v11 import Message, Event, Bot
+from nonebot import get_plugin_config
 
 from .config import Config
 
@@ -23,7 +20,6 @@ class maindate():
             "主题": content,
         }
         self.date_list.append(date)
-        self.waiting_for_confirmation[user_id] = self.date_id
         if user_id not in self.user_dates:
             self.user_dates[user_id] = []
         self.user_dates[user_id].append(self.date_id)
