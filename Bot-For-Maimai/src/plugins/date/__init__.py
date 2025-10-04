@@ -28,10 +28,10 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
     user_id = event.get_user_id()
     group_id = event.group_id # type: ignore
     if group_id not in config.date_group: # type: ignore
-        await date.finish("本群未启用约会功能")
+        await date.finish("笨蛋~这个群不能约会哦~")
     content = str(event.get_message())[1: ]
     maindate.create_date(user_id, group_id, content) # type: ignore
-    await date.finish(f"约会已创建，主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 参加约会") # type: ignore
+    await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     
     
 @join_date.handle()
