@@ -19,7 +19,7 @@ __plugin_meta__ = PluginMetadata(
 config = get_plugin_config(Config)
 
 #注册事件响应器
-date = on_command("🈷", priority=5, block=False, aliases={"约", "月"}, rule=to_me())  #发起约！
+date = on_command("🈷", priority=5, block=False, aliases={"约", "月"})  #发起约！
 join_date = on_command("join_date", priority=5, block=False, aliases={"参加约", "jdate"}, rule=to_me())  #参加约！
 quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"}, rule=to_me())  #退出约！
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"}, rule=to_me())  #约列表
@@ -114,7 +114,7 @@ async def handle_first_receive(bot: Bot, event:Event, state: T_State, args: Mess
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
     msg = (
         "约会功能使用说明（注意！注意！记得@我哦）：\n"
-        "1. 发起约会：发送 'date 主题' 创建一个新约会。\n"
+        "1. 发起约会（这个不用@我哦）：发送 'date 主题' 创建一个新约会。\n"
         "2. 参加约会：发送 'join_date 约会ID' 参加指定ID的约会。\n"
         "3. 退出约会：发送 'quit_date 约会ID' 退出指定ID的约会。\n"
         "4. 查看约会列表：发送 'list_date' 查看当前群的所有约会。\n"
