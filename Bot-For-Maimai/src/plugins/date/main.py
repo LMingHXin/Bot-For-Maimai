@@ -33,6 +33,25 @@ class maindate():
         return "success"  # 返回success标识符
     
     
+    def create_repeat_date(self, user_id, group_id, content) -> str:  # 创建约会
+        self.date_id += 1
+        date = {
+            "id": self.date_id,
+            "参与人员": [],
+            "群聊": group_id,
+            "主题": content,
+        }
+        date["参与人员"].append(user_id)
+        self.date_list.append(date) # type: ignore
+        if user_id not in self.user_dates:
+            self.user_dates[user_id] = []
+        self.user_dates[user_id].append(self.date_id)
+        if group_id not in self.group_dates:
+            self.group_dates[group_id] = []
+        self.group_dates[group_id].append(self.date_id)
+        return "success"  # 返回success标识符
+    
+    
     def join_date(self, user_id, date_id) -> bool:  # 参加约会
         for date in self.date_list: # type: ignore
             if date["id"] == date_id:

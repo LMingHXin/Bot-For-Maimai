@@ -35,7 +35,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
     val = maindate.create_date(user_id, group_id, content) # type: ignore
     if val != "success":
         state["date_id"] = int(val)
-        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消") # type: ignore
+        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个new创建新的约会~") # type: ignore
     if val == "success":
         await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     
@@ -51,6 +51,10 @@ async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
             await date.finish(f"成功加入ID为{date_id}的约会了喵~祝你玩的愉快喵~")
         else:
             await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
+    if msg in {"new", "创建新的", "创建新约会", "new date", "n"}:
+        content = str(event.get_message())[1: ]
+        maindate.create_repeat_date(user_id, event.group_id, content) # type: ignore
+        await date.finish(f"行吧~居然不和别人一块约会~真是孤高自傲呢~\n主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     else:
         await date.finish("好吧~不参加也行喵~")
     
