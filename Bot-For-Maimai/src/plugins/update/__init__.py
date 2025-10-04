@@ -33,7 +33,7 @@ async def _(bot: Bot, event: Event, state: T_State):
     print(msg)
     if msg == "更新":
         usrid = event.get_user_id()
-        if usrid not in config.master_qq: # type: ignore
+        if int(usrid) not in config.master_qq: # type: ignore
             await update.finish(Message("只有主人可以使用此命令")) 
         repo = GitRepo(path="/home/sa/Bot-For-Maimai")
         repo.pull()
