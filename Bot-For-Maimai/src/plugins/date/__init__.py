@@ -30,7 +30,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     if group_id not in config.date_group:
         await date.finish("本群未启用约会功能")
     msg = str(event.get_message()).strip()
-    maindate.create_date(user_id, group_id, msg)
+    maindate.create_date(maindate, user_id, group_id, msg)
     await date.finish(f"约会已创建，主题：{msg}")
     
     
