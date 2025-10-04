@@ -17,6 +17,8 @@ class maindate():
             if date["主题"] == content and date["群聊"] == group_id:
                 datelist[0] = True
                 datelist.append(date["id"])
+        if datelist[0]:
+            return datelist  # 返回已有的约会ID列表
         self.date_id += 1
         date = {
             "id": self.date_id,
@@ -99,7 +101,6 @@ class maindate():
             if date["id"] == date_id:
                 self.date_list.remove(date) # type: ignore
                 sign = True
-                continue
             if date["id"] > date_id:
                 date["id"] -= 1
                 continue
