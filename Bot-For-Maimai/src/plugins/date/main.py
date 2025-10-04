@@ -89,6 +89,11 @@ class maindate():
             return [date for date in self.date_list if date["id"] in self.group_dates[group_id]] # type: ignore # 返回该群的约会列表
         return [] # 返回空值
     
+    def get_user_dates(self, user_id) -> list:  # 获取用户的约会列表
+        if user_id in self.user_dates:
+            return [date for date in self.date_list if date["id"] in self.user_dates[user_id]] # type: ignore # 返回该用户的约会列表
+        return [] # 返回空值
+    
     def get_date(self, date_id) -> dict:  # 获取约会详情
         for date in self.date_list: # type: ignore
             if date["id"] == date_id:
