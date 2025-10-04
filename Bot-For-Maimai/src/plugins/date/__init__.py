@@ -1,4 +1,3 @@
-from ast import arg
 from nonebot import get_plugin_config, on_command, on_message
 from nonebot.plugin import PluginMetadata
 from nonebot.typing import T_State
