@@ -98,12 +98,12 @@ class maindate():
     def delete_date(self, date_id) -> bool:  # 删除约会
         sign :bool = False
         for date in self.date_list: # type: ignore
-            print("dateid:" + str(date["id"]) + "id:" + str(date_id))
             if date["id"] == date_id:
                 self.date_list.remove(date) # type: ignore
                 sign = True
-            if date["id"] > date_id:
-                date["id"] -= 1
+                break
+        for date in self_list.remove(date) # type: ignore
+            date["id"] -= 1
         self.date_id -= 1 # type: ignore
         return sign  # 返回False表示未找到
     
