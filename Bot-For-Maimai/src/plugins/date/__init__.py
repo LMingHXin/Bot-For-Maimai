@@ -36,35 +36,37 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
     if not content:
         await date.finish("笨蛋~谁知道你要月什么喵~")
     val = maindate.create_date(user_id, group_id, content) # type: ignore
-    if val != "success":
-        state["date_id"] = int(val)
+    if val[0]:
+        state["date_id"] = val
         state["context"] = content
         await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new' 创建新的约会~") # type: ignore
-    if val == "success":
+    if not val[0]:
         await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
     
 @date.got("confirm", prompt="请确认是否加入已经存在的约会喵~")
 async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
-    msg = str(event.get_message())
+    msg = str(event.get_message()).split(" ")
     print(msg)
-    if msg in {"yes", "y", "是", "对", "好", "参加", "加入"}:
-        date_id = state.get("date_id")
-        if not date_id:
+    if msg[0] in {"yes", "y", "是", "对", "好", "参加", "加入"}:
+        date_id = msg[1]
+        if date_id in state.get("date_id"): # type: ignore
             await date.finish("笨蛋~没有约会ID喵~")
         if maindate.join_date(user_id, date_id): # type: ignore
             await date.finish(f"成功加入ID为{date_id}的约会了喵~祝你玩的愉快喵~")
         else:
             await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
-    if msg in {"new", "创建新的", "创建新约会", "new date", "n"}:
+    if msg[0] in {"new", "创建新的", "创建新约会", "new date", "n"}:
         content = state.get("context")
         print(content)
         if content == "":
             await date.reject("笨蛋~谁知道你要月什么喵~")
         maindate.create_repeat_date(user_id, event.group_id, content) # type: ignore
         await date.finish(f"行吧~居然不和别人一块约会~真是孤高自傲呢~\n主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
-    else:
+    if msg[0] in {"no", "n", "不是", "不对", "算了", "取消"}:
         await date.finish("好吧~不参加也行喵~")
+    else:
+        await date.reject("请输入有效的选项喵~\n发送 'yes+id' 确认参加，发送 'no' 取消, 当然，你也可以发个 'new' 创建新的约会~")
     
     
 @join_date.handle()
@@ -98,10 +100,10 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
 async def handle_first_receive(bot: Bot, event:Event, state: T_State, args: Message = CommandArg()): # type: ignore
     group_id = event.group_id # type: ignore
     if group_id not in config.date_group: # type: ignore
-        await list_date.finish("本群未启用约会功能")
+        await list_date.finish("笨蛋~这个群不能约会哦~")
     Rmaindate = maindate.get_date_list(group_id) # type: ignore
     if not Rmaindate:
-        await list_date.finish("当前群暂无约会")
+        await list_date.finish("现在群里没有约会喵~快来发起一个吧~")
     msg = "当前群约会列表：\n"
     for date in Rmaindate: # type: ignore
         msg += f"ID: {date['id']}, 主题: {date['主题']}, 参与人员: {date.get('参与人员', [])}\n"
@@ -125,7 +127,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): 
     user_id = int(event.get_user_id())
     if user_id not in config.admin: # type: ignore
-        await date_setting.finish("你不是管理员，无权使用此功能")
+        await date_setting.finish("杂鱼~你不是管理员哦~")
     msg = args.extract_plain_text().strip()
     print(msg)
     if msg == "查看设置":

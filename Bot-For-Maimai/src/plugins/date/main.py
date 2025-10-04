@@ -11,10 +11,12 @@ class maindate():
         self.user_dates = {}  # 用户的约会 {user_id: [date_id, ...]}
         self.group_dates = {}  # 群的约会 {group_id: [date_id, ...]}
     
-    def create_date(self, user_id, group_id, content) -> str:  # 创建约会
+    def create_date(self, user_id, group_id, content) -> list:  # 创建约会
+        datelist :list = [False]
         for date in self.date_list: # type: ignore
             if date["主题"] == content and date["群聊"] == group_id:
-                return str(date["id"])  # 如果相同主题的约会已存在，返回id
+                datelist[0] = True
+                datelist.append(date["id"])
         self.date_id += 1
         date = {
             "id": self.date_id,
@@ -30,7 +32,8 @@ class maindate():
         if group_id not in self.group_dates:
             self.group_dates[group_id] = []
         self.group_dates[group_id].append(self.date_id)
-        return "success"  # 返回success标识符
+        datelist.append("success")
+        return datelist  # 返回success标识符
     
     
     def create_repeat_date(self, user_id, group_id, content) -> str:  # 创建约会
@@ -92,16 +95,16 @@ class maindate():
         return None  # type: ignore # 返回None表示未找到
     
     def delete_date(self, date_id) -> bool:  # 删除约会
+        sign :bool = False
         for date in self.date_list: # type: ignore
             if date["id"] == date_id:
                 self.date_list.remove(date) # type: ignore
-                group_id = date["群聊"]
-                if group_id in self.group_dates and date_id in self.group_dates[group_id]:
-                    self.group_dates[group_id].remove(date_id)
-                for user_id in date.get("参与人员", []):
-                    if user_id in self.user_dates and date_id in self.user_dates[user_id]:
-                        self.user_dates[user_id].remove(date_id)
-                return True
-        return False  # 返回False表示未找到
+                sign = True
+                continue
+            if date["id"] > date_id:
+                date["id"] -= 1
+                continue
+        self.date_id -= 1 # type: ignore
+        return sign  # 返回False表示未找到
     
 maindate = maindate() # type: ignore
