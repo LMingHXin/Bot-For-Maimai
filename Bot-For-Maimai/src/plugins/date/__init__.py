@@ -21,7 +21,7 @@ join_date = on_command("join_date", priority=5, block=False, aliases={"参加约
 quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"})  #退出约！
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"})  #约列表
 date_help = on_command("date_help", priority=4, block=False, aliases={"约帮助", "dhelp"})  #教你约！
-date_setting = on_command("date_setting", priority=3, block=False, aliases={"约设置", "dsetting"})  #神！权！
+date_setting = on_command("date_setting", priority=4, block=False, aliases={"约设置", "dsetting"})  #神！权！
 
 @date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: ignore
