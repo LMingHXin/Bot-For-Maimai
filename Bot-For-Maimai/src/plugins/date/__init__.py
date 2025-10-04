@@ -16,7 +16,7 @@ __plugin_meta__ = PluginMetadata(
 config = get_plugin_config(Config)
 
 #注册事件响应器
-date = on_command("date", priority=5, block=False, aliases={"约", "月"})  #发起约！
+date = on_command("🈷", priority=5, block=False, aliases={"约", "月"})  #发起约！
 join_date = on_command("join_date", priority=5, block=False, aliases={"参加约", "jdate"})  #参加约！
 quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"})  #退出约！
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"})  #约列表
@@ -30,8 +30,27 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
     if group_id not in config.date_group: # type: ignore
         await date.finish("笨蛋~这个群不能约会哦~")
     content = str(event.get_message())[1: ]
-    maindate.create_date(user_id, group_id, content) # type: ignore
+    if not content:
+        await date.finish("笨蛋~谁知道你要月什么喵~")
+    val = maindate.create_date(user_id, group_id, content) # type: ignore
+    if val != "success":
+        state["date_id"] = int(val)
+        await date.send(f"已经有相同主题的约会喵~\n主题：{content}\n约会ID：{val}\n发送 'yes' 确认参加，发送 'no' 取消") # type: ignore
     await date.finish(f"月！主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 就可以参加约会了哦~") # type: ignore
+@date.got("confirm", prompt="请确认是否加入已经存在的约会喵~")
+async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
+    user_id = event.get_user_id()
+    msg = str(event.get_message()).strip().lower()
+    if msg in {"yes", "y", "是", "对", "好", "参加", "加入"}:
+        date_id = state.get("date_id")
+        if not date_id:
+            await date.finish("笨蛋~没有约会ID喵~")
+        if maindate.join_date(user_id, date_id): # type: ignore
+            await date.finish(f"成功加入ID为{date_id}的约会了喵~祝你玩的愉快喵~")
+        else:
+            await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
+    else:
+        await date.finish("好吧~不参加也行喵~")
     
     
 @join_date.handle()

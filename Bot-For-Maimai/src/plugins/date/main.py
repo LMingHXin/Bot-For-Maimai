@@ -11,7 +11,10 @@ class maindate():
         self.user_dates = {}  # 用户的约会 {user_id: [date_id, ...]}
         self.group_dates = {}  # 群的约会 {group_id: [date_id, ...]}
     
-    def create_date(self, user_id, group_id, content) -> dict:  # 创建约会
+    def create_date(self, user_id, group_id, content) -> str:  # 创建约会
+        for date in self.date_list: # type: ignore
+            if date["主题"] == content and date["群聊"] == group_id:
+                return str(date["id"])  # 如果相同主题的约会已存在，返回id
         self.date_id += 1
         date = {
             "id": self.date_id,
@@ -27,7 +30,10 @@ class maindate():
         if group_id not in self.group_dates:
             self.group_dates[group_id] = []
         self.group_dates[group_id].append(self.date_id)
-        return date
+        return "success"  # 返回success标识符
+    
+    def comfirm_date(self, user_id, date_id) -> bool:  # 确认约会
+        for date in self.date_list:
     
     def join_date(self, user_id, date_id) -> bool:  # 参加约会
         for date in self.date_list: # type: ignore
