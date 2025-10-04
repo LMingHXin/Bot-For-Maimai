@@ -20,7 +20,7 @@ date = on_command("🈷", priority=5, block=False, aliases={"约", "月"})  #发
 join_date = on_command("join_date", priority=5, block=False, aliases={"参加约", "jdate"})  #参加约！
 quit_date = on_command("quit_date", priority=5, block=False, aliases={"退出约", "qdate"})  #退出约！
 list_date = on_command("list_date", priority=5, block=False, aliases={"约列表", "ldate"})  #约列表
-date_help = on_command("date_help", priority=4, block=True, aliases={"约帮助", "dhelp"})  #教你约！
+date_help = on_command("date_help", priority=4, block=False, aliases={"约帮助", "dhelp"})  #教你约！
 date_setting = on_command("date_setting", priority=3, block=False, aliases={"约设置", "dsetting"})  #神！权！
 
 @date.handle()
@@ -116,7 +116,6 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State): # type: 
 @date_setting.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State): 
     user_id = int(event.get_user_id())
-    group_id = event.group_id # type: ignore
     if user_id not in config.admin: # type: ignore
         await date_setting.finish("你不是管理员，无权使用此功能")
     msg = str(event.get_message()).strip()
