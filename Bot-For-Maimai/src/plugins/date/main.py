@@ -73,7 +73,7 @@ class maindate():
     
     def quit_date(self, user_id, date_id, group_id) -> bool:  # 退出约会
         for date in self.date_list: # type: ignore
-            if date["id"] == date_id:
+            if date["id"] == date_id and date["群聊"] == group_id:
                 if "参与人员" in date and user_id in date["参与人员"]:
                     date["参与人员"].remove(user_id)
                     if user_id in self.user_dates and date_id in self.user_dates[user_id] and group_id == date["群聊"]:

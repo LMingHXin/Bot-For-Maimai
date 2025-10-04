@@ -121,7 +121,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
         await my_date.finish("你还没有参加任何约会喵~快去参加一个吧~")
     msg = "你参加的约会列表：\n"
     for date in Rmaindate: # type: ignore
-        msg += f"ID: {date['id']}, 主题: {date['主题']}, 参与人员: {date.get('参与人员', [])}\n"
+        msg += f"ID: {date['id']}, 主题: {date['主题']}, 参与人员: {date.get('参与人员', [])}, 群聊: {date.get('群聊', [])}\n"
     await my_date.finish(msg)
     
     
