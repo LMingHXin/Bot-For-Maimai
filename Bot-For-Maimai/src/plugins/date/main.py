@@ -32,8 +32,6 @@ class maindate():
         self.group_dates[group_id].append(self.date_id)
         return "success"  # 返回success标识符
     
-    def comfirm_date(self, user_id, date_id) -> bool:  # 确认约会
-        for date in self.date_list:
     
     def join_date(self, user_id, date_id) -> bool:  # 参加约会
         for date in self.date_list: # type: ignore
