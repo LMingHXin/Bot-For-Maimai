@@ -102,7 +102,7 @@ class maindate():
                 self.date_list.remove(date) # type: ignore
                 sign = True
                 break
-        for date in self_list.remove(date) # type: ignore
+        for date in self.date_list: # type: ignore
             date["id"] -= 1
         self.date_id -= 1 # type: ignore
         return sign  # 返回False表示未找到
