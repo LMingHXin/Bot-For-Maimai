@@ -29,7 +29,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     group_id = event.group_id
     if group_id not in config.date_group:
         await date.finish("本群未启用约会功能")
-    content = str(event.get_message())
+    content = str(event.get_message())[1: ]
     maindate.create_date(user_id, group_id, content)
     await date.finish(f"约会已创建，主题：{content}\n约会ID：{maindate.date_id}\n发送 'join_date {maindate.date_id}' 参加约会")
     
@@ -37,11 +37,11 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
 @join_date.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     user_id = event.get_user_id()
-    msg = str(event.get_message()).strip()
-    print(msg)
-    if not msg.isdigit():
+    msg = str(event.get_message()).split(' ')[1].strip()
+    print(msg[0])
+    if not msg[0].isdigit():
         await join_date.finish("请输入有效的约会ID")
-    date_id = int(msg)
+    date_id = int(msg[0])
     if maindate.join_date(user_id, date_id):
         await join_date.finish(f"成功参加约会ID {date_id}")
     else:
