@@ -129,9 +129,12 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
         await date_setting.finish(f"当前约会功能启用群：{config.date_group}\n当前管理员群：{config.admin_group}\n当前管理员：{config.admin}") # type: ignore
     if msg == "":
         await date_setting.finish("请输入设置命令，如 '删除约会 约会ID'")
-    if not msg.isdigit():
+    parts = msg.split()
+    if len(parts) != 2 or parts[0] != "删除约会":
         await date_setting.finish("格式错误，请使用 '删除约会 约会ID'")
-    del_date_id = int(msg)
+    if not parts[1].isdigit():
+        await date_setting.finish("格式错误，请使用 '删除约会 约会ID'")
+    del_date_id = int(parts[1])
     if maindate.delete_date(del_date_id): # type: ignore
         await date_setting.finish(f"成功删除约会ID：{del_date_id}")
     else:
