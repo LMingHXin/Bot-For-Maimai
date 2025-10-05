@@ -26,7 +26,6 @@ class GitRepo():
         origin = self.repo.remotes.origin
         self.repo.git.stash()
         origin.pull()
-        self.repo.git.stash('apply')
 
 @update.handle()
 async def _(bot: Bot, event: Event, state: T_State):
