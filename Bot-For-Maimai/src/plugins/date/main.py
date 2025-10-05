@@ -10,11 +10,14 @@ class maindate():
         self.date_id = 0  # 约会ID
         self.user_dates = {}  # 用户的约会 {user_id: [date_id, ...]}
         self.group_dates = {}  # 群的约会 {group_id: [date_id, ...]}
+        
     
     def create_date(self, user_id, group_id, content) -> list:  # 创建约会
         datelist :list = [False]
         for date in self.date_list: # type: ignore
+            print(str(date["主题"]) + "：" + str(content) + "\n" + str(date["群聊"]) + "：" + str(group_id))
             if date["主题"] == content and date["群聊"] == group_id:
+                print(str(date["主题"]) + "：" + str(content) + "\n" + str(date["群聊"]) + "：" + str(group_id))
                 datelist[0] = True
                 datelist.append(date["id"])
         if datelist[0]:
@@ -56,6 +59,7 @@ class maindate():
         return "success"  # 返回success标识符
     
     
+    
     def join_date(self, user_id, date_id, group_id) -> bool:  # 参加约会
         for date in self.date_list: # type: ignore
             if date["id"] == date_id and date["群聊"] == group_id:
@@ -71,6 +75,7 @@ class maindate():
                     return False
         return False  
     
+    
     def quit_date(self, user_id, date_id, group_id) -> bool:  # 退出约会
         for date in self.date_list: # type: ignore
             if date["id"] == date_id and date["群聊"] == group_id:
@@ -83,22 +88,25 @@ class maindate():
                     return False
         return False
     
+    
     def get_date_list(self, group_id) -> list:  # 获取群的约会列表
         if group_id in self.group_dates:
-            print(date for date in self.date_list if date["id"] in self.group_dates[group_id]) # type: ignore
-            return [date for date in self.date_list if date["id"] in self.group_dates[group_id]] # type: ignore # 返回该群的约会列表
+            return [date for date in self.date_list if date["id"] in self.group_dates[group_id] and date["群聊"] == group_id] # type: ignore # 返回该群的约会列表
         return [] # 返回空值
+    
     
     def get_user_dates(self, user_id) -> list:  # 获取用户的约会列表
         if user_id in self.user_dates:
-            return [date for date in self.date_list if date["id"] in self.user_dates[user_id]] # type: ignore # 返回该用户的约会列表
+            return [date for date in self.date_list if date["id"] in self.user_dates[user_id] and date["用户"] == user_id] # type: ignore # 返回该用户的约会列表
         return [] # 返回空值
+    
     
     def get_date(self, date_id) -> dict:  # 获取约会详情
         for date in self.date_list: # type: ignore
             if date["id"] == date_id:
                 return date
         return None  # type: ignore # 返回None表示未找到
+    
     
     def delete_date(self, date_id) -> bool:  # 删除约会
         sign :bool = False
@@ -112,5 +120,6 @@ class maindate():
                 date["id"] -= 1 
         self.date_id -= 1 # type: ignore
         return sign  # 返回False表示未找到
+    
     
 maindate = maindate() # type: ignore
