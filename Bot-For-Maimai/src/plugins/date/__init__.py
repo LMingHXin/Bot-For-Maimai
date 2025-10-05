@@ -49,6 +49,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Mes
 @date.got("confirm", prompt="请确认是否加入已经存在的约会喵~")
 async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
     user_id = event.get_user_id()
+    group_id = event.group_id # type: ignore
     msg = str(event.get_message()).split(" ")
     print(msg)
     if msg[0] in {"yes", "y", "是", "对", "好", "参加", "加入"}:
@@ -59,7 +60,7 @@ async def handle_confirm(bot: Bot, event: Event, state: T_State): # type: ignore
         date_id = msg[1]
         if date_id in state.get("date_id"): # type: ignore
             await date.finish("笨蛋~没有约会ID喵~")
-        if maindate.join_date(user_id, date_id): # type: ignore
+        if maindate.join_date(user_id, date_id, group_id): # type: ignore
             await date.finish(f"成功加入ID为{date_id}的约会了喵~祝你玩的愉快喵~")
         else:
             await date.finish(f"无法参加约会ID {date_id}，可能已参加或ID无效")
