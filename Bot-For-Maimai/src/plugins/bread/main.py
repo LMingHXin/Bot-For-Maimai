@@ -32,8 +32,6 @@ class base():
             group_id,
         )
         
-    def __call__(self, *args: random.Any, **kwds: random.Any) -> random.Any: # type: ignore
-        pass
 
 class bread(base):
     def __init__(self, user_id: int, group_id: str):
@@ -143,8 +141,6 @@ class bread(base):
             self.update_data(user_id, group_id)
             return f"成功吃到面包了喵！\n 吃掉了{debread} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
 
-    def __call__(self, *args: random.Any, **kwds: random.Any) -> random.Any: # type: ignore
-        return super().__call__(*args, **kwds)
     
     
 class status(base):
@@ -163,8 +159,6 @@ class status(base):
         protection_status = "开启" if self.Is_bread_protected else "关闭"
         return f"面包保护已切换为{protection_status}状态喵！"
     
-    def __call__(self, *args: random.Any, **kwds: random.Any) -> random.Any: # type: ignore
-        return super().__call__(*args, **kwds)
 
 
 class admin(base):
@@ -189,6 +183,3 @@ class admin(base):
         self.update_data(user_id, group_id)
         protection_status = "开启" if new_status else "关闭"
         return f"成功将用户{user_id}面包保护已修改为{protection_status}状态"
-    
-    def __call__(self, *args: random.Any, **kwds: random.Any) -> random.Any: # type: ignore
-        return super().__call__(*args, **kwds)
