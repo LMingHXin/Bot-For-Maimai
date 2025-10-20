@@ -1,0 +1,38 @@
+import asyncio, json
+from maimai_py import MaimaiClient, DivingFishProvider, PlayerIdentifier
+from .data import data
+
+maimai = MaimaiClient()
+diving_fish = DivingFishProvider(developer_token = "7bQMEdDJPiX8ysLlraSc9keUKAZn2Fqo")
+
+userdata = data() #type: ignore
+
+
+class core():
+    
+    def __init__(self, user_id: int)-> None:
+        self.userid = user_id
+        
+    async def update_maiscore(self) -> str:
+        token =  userdata.get_user_token(self.user_id) # type: ignore
+        dftoken = userdata.get_user_dftoken(self.user_id) # type: ignore
+        if token == "" or dftoken == "":
+            return f"未绑定水鱼TOKEN或未绑定舞萌TOKEN\n请使用指令'dfbind TOKEN'以及'maibind TOKEN'进行绑定"
+        my_account = await maimai.qrcode(token)
+        scores = await maimai.scores(my_account, provider=diving_fish) # type: ignore
+        asyncio.gather(
+        maimai.updates(PlayerIdentifier(credentials=dftoken), scores.scores, provider=diving_fish),
+        )
+        return "success"
+    
+    def maibind_token(self, user_id: int, token: str) -> str:
+        userdata.userlib[str(user_id)][0] = token
+        with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
+            json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
+        return "水鱼绑定成功！"
+
+    def dfbind_token(self, user_id: int, name: str) -> str:
+        userdata.userlib[str(user_id)][1] = name
+        with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
+            json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
+        return "舞萌绑定成功！"
