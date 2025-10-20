@@ -17,7 +17,7 @@ class data():
             return ""
         
     def get_user_dftoken(self, user_id: int) -> str:
-        with open("home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
+        with open("/home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
             self.userlib = json.load(f)
         try:
             name = self.userlib[str(user_id)][1]
