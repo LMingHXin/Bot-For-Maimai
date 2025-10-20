@@ -17,7 +17,7 @@ class data():
         self.level: float
         
     def get_user_data(self, user_id: int, group_id: str) -> bool:
-        with open("data/bread_data.json", "r", encoding="utf-8") as f:
+        with open("/home/sa/bread_data.json", "r", encoding="utf-8") as f:
             self.user_data = json.load(f)
         try:
             self.count_of_bread = self.user_data[group_id][str(user_id)]["count_of_bread"]
