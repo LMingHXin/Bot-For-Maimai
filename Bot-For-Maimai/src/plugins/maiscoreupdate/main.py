@@ -11,7 +11,7 @@ userdata = data() #type: ignore
 class core():
     
     def __init__(self, user_id: int)-> None:
-        self.userid = user_id
+        self.user_id = user_id
         
     async def update_maiscore(self) -> str:
         token =  userdata.get_user_token(self.user_id) # type: ignore
