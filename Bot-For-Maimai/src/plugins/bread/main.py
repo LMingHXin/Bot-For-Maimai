@@ -90,7 +90,7 @@ class bread(base):
             return "当前群组内面包用户数量不足，无法偷取面包喵！"
         temp_list = usr_list.copy()
         while True:
-            target_id = random.choice(usr_list)
+            target_id = random.choice(temp_list)
             self.target_bread = base(int(target_id), str(group_id))
             if target_id != str(user_id) and not self.target_bread.Is_bread_protected and self.target_bread.count_of_bread > 0: 
                 break
@@ -172,29 +172,29 @@ class admin(base):
     
     def fix_count_of_bread(self, user_id: int, group_id: str, new_count: int) -> str:
         self.count_of_bread = new_count
-        try:
+        if Data.get_user_data(user_id, group_id):
             self.update_data(user_id, group_id)
             return f"成功将用户{user_id}面包数量已修改为{new_count}个"
-        except:
+        else:
             return f"修改用户{user_id}面包数量失败，可能是该用户不存在"
     
     
     def fix_level(self, user_id: int, group_id: str, new_level: int) -> str:
         self.level = new_level
-        try:
+        if Data.get_user_data(user_id, group_id):
             if new_level > MAX_LEVEL:
                 self.level = MAX_LEVEL
             self.update_data(user_id, group_id)
             return f"成功将用户{user_id}面包等级已修改为{new_level}级"
-        except:
+        else:
             return f"修改用户{user_id}面包等级失败，可能是该用户不存在"
     
     
     def fix_protection(self, user_id: int, group_id: str, new_status: bool) -> str:
         self.Is_bread_protected = new_status
-        try:
+        if Data.get_user_data(user_id, group_id):
             self.update_data(user_id, group_id)
             protection_status = "开启" if new_status else "关闭"
             return f"成功将用户{user_id}面包保护已修改为{protection_status}状态"
-        except:
+        else:
             return f"修改用户{user_id}面包保护状态失败，可能是该用户不存在"
