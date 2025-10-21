@@ -2,7 +2,9 @@ import json
 
 class data():
     def __init__(self) -> None:
-        self.userlib = {}
+        self.userlib = {str: list}
+        with open("/home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
+            self.userlib = json.load(f)
         '''{
             "User_Id":[TOKEN, dftoken]
             }'''
