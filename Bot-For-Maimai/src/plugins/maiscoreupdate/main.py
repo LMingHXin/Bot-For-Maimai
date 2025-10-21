@@ -5,14 +5,13 @@ from .data import data
 maimai = MaimaiClient()
 diving_fish = DivingFishProvider(developer_token = "7bQMEdDJPiX8ysLlraSc9keUKAZn2Fqo")
 
-userdata = data() #type: ignore
-
 
 class core():
     
     def __init__(self, user_id: int)-> None:
+        self.userdata = data()
         self.user_id = user_id
-        self.userlib = userdata.userlib
+        self.userlib = self.userdata.userlib
         
     async def update_maiscore(self) -> str:
         token =  userdata.get_user_token(self.user_id) # type: ignore
@@ -31,7 +30,7 @@ class core():
             self.userlib[str(user_id)] = ["",""] # type: ignore
         self.userlib[str(user_id)][0] = token # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
-            json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
+            json.dump(self.userdata.userlib, f, ensure_ascii=False, indent=4)
         return "舞萌绑定/更新成功！"
 
     def dfbind_token(self, user_id: int, token: str) -> str:
@@ -39,5 +38,5 @@ class core():
             self.userlib[str(user_id)] = ["",""] # type: ignore
         self.userlib[str(user_id)][1] = token # type: ignore # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
-            json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
+            json.dump(self.userdata.userlib, f, ensure_ascii=False, indent=4)
         return "水鱼绑定/更新成功！"
