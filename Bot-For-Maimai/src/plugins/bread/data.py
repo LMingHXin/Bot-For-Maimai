@@ -36,6 +36,10 @@ class data():
                                                         "Is_bread_protected": Is_bread_protected,
                                                         "level": level,
                                                        }
+            else:
+                self.user_data[group_id][str(user_id)]["count_of_bread"] = count_of_bread
+                self.user_data[group_id][str(user_id)]["Is_bread_protected"] = Is_bread_protected
+                self.user_data[group_id][str(user_id)]["level"] = level
             json.dump(self.user_data, f, ensure_ascii=False, indent=4)
     
     def get_user_list(self, group_id: str) -> list:
