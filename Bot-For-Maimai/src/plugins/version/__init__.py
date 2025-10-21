@@ -26,7 +26,7 @@ version = on_command("version", priority=10, block=False, aliases={"版本", "v"
 async def handle_first_receive(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()): # type: ignore
     content = args.extract_plain_text()
     msg = (
-        "人家现在的版本是 0.1.0 喵~\n"
+        "人家现在的版本是 1.0.0 喵~\n"
         "开发人员是铭心和美好一天哦~❤\n"
         "他们也是我的主人哦~❤\n"
         "有问题可以找他们哦~❤\n"
