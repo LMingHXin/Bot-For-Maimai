@@ -47,10 +47,10 @@ class bread(base):
                 if self.count_of_bread < 0:
                     self.count_of_bread = 0
                     base.update_data(self, user_id, group_id)
-                    return f"买到坏面包了喵！\n 面包数量减少了{dbread} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n不想让你负债喵，人家帮你归零了喵~"
+                    return f"买到坏面包了喵！\n 面包数量减少了{abs(dbread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n不想让你负债喵，人家帮你归零了喵~"
                 else:
                     base.update_data(self, user_id, group_id)
-                    return f"买到坏面包了喵！\n 面包数量减少了{dbread} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
+                    return f"买到坏面包了喵！\n 面包数量减少了{abs(dbread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
             else:
                 self.count_of_bread += dbread
                 base.update_data(self, user_id, group_id)
@@ -100,8 +100,8 @@ class bread(base):
                 if self.count_of_bread < 0:
                     self.count_of_bread = 0
                     self.update_data(user_id, group_id)
-                    return f"被防卫了喵！\n 用户{target_id}抢了你{sbread}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n不想让你负债喵，人家帮你归零了喵~"
-                return f"被防卫了喵！\n 用户{target_id}抢了你{sbread}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
+                    return f"被防卫了喵！\n 用户{target_id}抢了你{abs(sbread)}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n不想让你负债喵，人家帮你归零了喵~"
+                return f"被防卫了喵！\n 用户{target_id}抢了你{abs(sbread)}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
             return f"成功从用户{target_id}处偷取了{sbread}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
         else:
             sbread = random.randint(1, self.target_bread.count_of_bread)
