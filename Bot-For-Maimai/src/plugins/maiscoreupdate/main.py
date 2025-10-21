@@ -32,7 +32,7 @@ class core():
         self.userlib[str(user_id)][0] = token # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
             json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
-        return "水鱼绑定/更新成功！"
+        return "舞萌绑定/更新成功！"
 
     def dfbind_token(self, user_id: int, token: str) -> str:
         if self.user_id not in self.userlib:
@@ -40,4 +40,4 @@ class core():
         self.userlib[str(user_id)][1] = token # type: ignore # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
             json.dump(userdata.userlib, f, ensure_ascii=False, indent=4)
-        return "舞萌绑定/更新成功！"
+        return "水鱼绑定/更新成功！"
