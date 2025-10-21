@@ -27,7 +27,10 @@ dfbind = on_command("dfbind", priority=5, block=False)  #绑定水鱼TOKEN
 async def handle_maiupdate(bot: Bot, event: Event, state: T_State):
     user_id = int(event.get_user_id())
     core_instance = core(user_id)
-    msg = await core_instance.update_maiscore()
+    try:
+        msg = await core_instance.update_maiscore()
+    except:
+        msg = "更新失败，可能是舞萌二维码失效，请重新绑定TOKEN后再试"
     await maiupdate.finish(msg) 
 
 @maibind.handle()
