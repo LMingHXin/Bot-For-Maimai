@@ -1,5 +1,5 @@
 import asyncio, json
-from maimai_py import MaimaiClient, DivingFishProvider, PlayerIdentifier
+from maimai_py import MaimaiClient, DivingFishProvider, PlayerIdentifier, ArcadeProvider
 from .data import data
 
 maimai = MaimaiClient()
@@ -19,7 +19,7 @@ class core():
         if token == "" or dftoken == "":
             return f"未绑定水鱼TOKEN或未绑定舞萌TOKEN\n请使用指令'dfbind TOKEN'以及'maibind TOKEN'进行绑定"
         my_account = await maimai.qrcode(token)
-        scores = await maimai.scores(my_account, provider=diving_fish) # type: ignore
+        scores = await maimai.scores(my_account, provider=ArcadeProvider()) # type: ignore
         asyncio.gather(
         maimai.updates(PlayerIdentifier(credentials=dftoken), scores.scores, provider=diving_fish),
         )
