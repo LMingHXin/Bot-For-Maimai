@@ -29,6 +29,7 @@ class core():
         if not self.userdata.check_user_exist(user_id):
             self.userlib[str(user_id)] = ["",""] # type: ignore
         self.userlib[str(user_id)][0] = token # type: ignore
+        print(self.userlib[str(user_id)])  # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
             json.dump(self.userdata.userlib, f, ensure_ascii=False, indent=4)
         return "舞萌绑定/更新成功！"
@@ -36,7 +37,8 @@ class core():
     def dfbind_token(self, user_id: int, token: str) -> str:
         if not self.userdata.check_user_exist(user_id):
             self.userlib[str(user_id)] = ["",""] # type: ignore
-        self.userlib[str(user_id)][1] = token # type: ignore # type: ignore
+        self.userlib[str(user_id)][1] = token # type: ignore 
+        print(self.userlib[str(user_id)])  # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
             json.dump(self.userdata.userlib, f, ensure_ascii=False, indent=4)
         return "水鱼绑定/更新成功！"

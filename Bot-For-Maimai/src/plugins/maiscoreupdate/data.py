@@ -23,8 +23,8 @@ class data():
         with open("/home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
             self.userlib = json.load(f)
         try:
-            name = self.userlib[str(user_id)][1]
-            return name
+            token = self.userlib[str(user_id)][1]
+            return token
         except:
             return ""
         
