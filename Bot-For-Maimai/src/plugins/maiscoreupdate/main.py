@@ -14,8 +14,8 @@ class core():
         self.userlib = self.userdata.userlib
         
     async def update_maiscore(self) -> str:
-        token =  userdata.get_user_token(self.user_id) # type: ignore
-        dftoken = userdata.get_user_dftoken(self.user_id) # type: ignore
+        token =  self.userdata.get_user_token(self.user_id) # type: ignore
+        dftoken = self.userdata.get_user_dftoken(self.user_id) # type: ignore
         if token == "" or dftoken == "":
             return f"未绑定水鱼TOKEN或未绑定舞萌TOKEN\n请使用指令'dfbind TOKEN'以及'maibind TOKEN'进行绑定"
         my_account = await maimai.qrcode(token)
