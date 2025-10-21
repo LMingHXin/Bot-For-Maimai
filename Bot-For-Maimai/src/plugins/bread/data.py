@@ -29,11 +29,13 @@ class data():
     
     def update_user_data(self, count_of_bread: int, Is_bread_protected: bool, level: int, user_id: int, group_id: str) -> None:
         with open("/home/sa/bread_data.json", "w", encoding="utf-8") as f:
-            self.user_data[group_id][str(user_id)] = {
-                "count_of_bread": count_of_bread,  
-                "Is_bread_protected": Is_bread_protected,
-                "level": level,
-            }
+            if group_id not in self.user_data.keys():
+                self.user_data[group_id] = {}
+            if str(user_id) not in self.user_data[group_id].keys():
+                self.user_data[group_id][str(user_id)] = {"count_of_bread": 0,  
+                                                        "Is_bread_protected": False,
+                                                        "level": 0.0,
+                                                       }
             json.dump(self.user_data, f, ensure_ascii=False, indent=4)
     
     def get_user_list(self, group_id: str) -> list:

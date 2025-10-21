@@ -12,7 +12,10 @@ class data():
     def get_user_token(self, user_id: int) -> str:
         with open("/home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
             self.userlib = json.load(f)
-        print(self.userlib[str(user_id)])
+        try:
+            print(self.userlib[str(user_id)])
+        except:
+            pass
         try:
             token = self.userlib[str(user_id)][0]
             return token
