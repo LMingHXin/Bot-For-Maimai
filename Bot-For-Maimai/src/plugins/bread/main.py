@@ -91,10 +91,10 @@ class bread(base):
         temp_list = usr_list.copy()
         while True:
             target_id = random.choice(usr_list)
-            temp_list.remove(target_id)
             self.target_bread = base(int(target_id), str(group_id))
             if target_id != str(user_id) and not self.target_bread.Is_bread_protected and self.target_bread.count_of_bread > 0: 
                 break
+            temp_list.remove(target_id)
             if len(temp_list) <= 0:
                 return "找不到可偷取面包的用户喵！"
         if self.level >= 10:
