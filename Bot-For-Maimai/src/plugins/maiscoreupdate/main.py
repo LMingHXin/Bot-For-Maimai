@@ -26,7 +26,7 @@ class core():
         return "success"
     
     def maibind_token(self, user_id: int, token: str) -> str:
-        if self.user_id not in self.userlib.keys():
+        if not self.userdata.check_user_exist(user_id):
             self.userlib[str(user_id)] = ["",""] # type: ignore
         self.userlib[str(user_id)][0] = token # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
@@ -34,7 +34,7 @@ class core():
         return "舞萌绑定/更新成功！"
 
     def dfbind_token(self, user_id: int, token: str) -> str:
-        if self.user_id not in self.userlib.keys():
+        if not self.userdata.check_user_exist(user_id):
             self.userlib[str(user_id)] = ["",""] # type: ignore
         self.userlib[str(user_id)][1] = token # type: ignore # type: ignore
         with open("/home/sa/maiscoreupdate_userlib.json", "w", encoding="utf-8") as f:
