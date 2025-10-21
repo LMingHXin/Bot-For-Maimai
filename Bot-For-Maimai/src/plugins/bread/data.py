@@ -32,9 +32,9 @@ class data():
             if group_id not in self.user_data.keys():
                 self.user_data[group_id] = {}
             if str(user_id) not in self.user_data[group_id].keys():
-                self.user_data[group_id][str(user_id)] = {"count_of_bread": 0,  
-                                                        "Is_bread_protected": False,
-                                                        "level": 0.0,
+                self.user_data[group_id][str(user_id)] = {"count_of_bread": count_of_bread,  
+                                                        "Is_bread_protected": Is_bread_protected,
+                                                        "level": level,
                                                        }
             json.dump(self.user_data, f, ensure_ascii=False, indent=4)
     

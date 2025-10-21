@@ -12,12 +12,12 @@ class base():
         else:
             self.count_of_bread = 0
             self.Is_bread_protected = False
-            self.level = 1
+            self.level = 1.0
             self.bind_group = str(group_id)
             Data.update_user_data(
                 self.count_of_bread,
                 self.Is_bread_protected,
-                self.level,
+                self.level, # type: ignore
                 user_id,
                 group_id,
             )
