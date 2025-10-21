@@ -27,3 +27,12 @@ class data():
             return name
         except:
             return ""
+        
+    def check_user_exist(self, user_id: int) -> bool:
+        with open("/home/sa/maiscoreupdate_userlib.json", "r", encoding="utf-8") as f:
+            self.userlib = json.load(f)
+        try:
+            _ = self.userlib[str(user_id)]
+            return True
+        except:
+            return False
