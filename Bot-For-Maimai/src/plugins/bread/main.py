@@ -41,7 +41,7 @@ class bread(base):
     def get_bread(self, user_id: int, group_id: str) -> str: # get bread function
         dbread : int
         if self.level >= 10:
-            dbread = random.randint(-5, 10)
+            dbread = random.randint(-self.count_of_bread, 10)
             if dbread < 0:
                 self.count_of_bread += dbread
                 if self.count_of_bread < 0:
@@ -56,7 +56,7 @@ class bread(base):
                 base.update_data(self, user_id, group_id)
                 return f"成功购买了喵！\n 面包数量增加了{dbread} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
         if self.level >= 5:
-            dbread = random.randint(-2, 5)
+            dbread = random.randint(-3, 5)
             if dbread < 0:
                 self.count_of_bread += dbread
                 if self.count_of_bread < 0:
