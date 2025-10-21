@@ -88,11 +88,15 @@ class bread(base):
             return "你开启了面包保护喵，偷取失败喵！"
         if len(usr_list) <= 1:
             return "当前群组内面包用户数量不足，无法偷取面包喵！"
+        temp_list = usr_list.copy()
         while True:
             target_id = random.choice(usr_list)
+            temp_list.remove(target_id)
             self.target_bread = base(int(target_id), str(group_id))
             if target_id != str(user_id) and not self.target_bread.Is_bread_protected and self.target_bread.count_of_bread > 0: 
                 break
+            if len(temp_list) <= 0:
+                return "找不到可偷取面包的用户喵！"
         if self.level >= 10:
             sbread = random.randint(-10, self.target_bread.count_of_bread)
             self.steal_core(user_id, group_id, sbread, int(target_id))
