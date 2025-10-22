@@ -21,7 +21,4 @@ async def _(bot: Bot, event: GroupRecallNoticeEvent, state: T_State):
     if event.group_id in config.access_groups: # type: ignore
         mid = event.message_id
         response = await bot.get_msg(message_id = mid)
-        await bot.send_group_msg(
-            group_id=event.group_id,
-            message=f"检测到撤回消息：\n发送者：{event.user_id}\n消息ID：{mid}\n消息内容：{response['message']}",
-        )
+        await defend_withdraw.finish(f"检测到撤回消息：\n发送者：{event.user_id}\n消息ID：{mid}\n消息内容：{response['message']}",)
