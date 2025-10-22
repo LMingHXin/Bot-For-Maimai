@@ -112,38 +112,55 @@ class bread(base):
             self.steal_core(user_id, group_id, sbread, int(target_id))
             return f"成功从用户{target_id}处偷取了{sbread}个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！"
     
-    
+    def luck_eat_bread(self) -> str: # eat bread function
+        if self.level < 5:
+            return "normal"
+        luck = random.randint(1, 100)
+        if luck <= 3:
+            self.debread = -self.debread
+            return "badluck"
+        if luck >= 98:
+            self.debread = self.debread * 2
+            return "bestluck"
+        return "normal"
+        
     def eat_bread(self, user_id, group_id) -> str: # eat bread function
         if self.count_of_bread <= 0:
             return f"杂鱼~你连面包都没有还想升级喵！"
         if self.level >= MAX_LEVEL:
             return f"你已经满级了喵！不能再升级了喵！"
         if self.level >= 10:
-            debread = random.randint(-self.count_of_bread, self.count_of_bread)
-            self.count_of_bread -= abs(debread)
-            self.level += debread / 100
+            self.debread = random.randint(1, self.count_of_bread)
+            self.count_of_bread -= abs(self.debread)
+            res = self.luck_eat_bread()
+            self.level += self.debread / 200
             if self.count_of_bread < 0:
                 self.count_of_bread = 0
             self.update_data(user_id, group_id)
-            if debread < 0:
-                return f"吃坏肚子了喵！\n 面包数量减少了{abs(debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
-            return f"成功吃到面包了喵！\n 吃掉了{abs(debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+            if res == "badluck":
+                return f"吃坏肚子了喵！\n 面包数量减少了{abs(self.debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
+            if  res == "bestluck":
+                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
+            return f"成功吃到面包了喵！\n 吃掉了{abs(self.debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
         if self.level >= 5:
-            debread = random.randint(-math.floor(self.count_of_bread/2), self.count_of_bread)
-            self.count_of_bread -= abs(debread)
-            self.level += debread / 100
+            self.debread = random.randint(-3, self.count_of_bread)
+            self.count_of_bread -= abs(self.debread)
+            res = self.luck_eat_bread()
+            self.level += self.debread / 100
             if self.count_of_bread < 0:
                 self.count_of_bread = 0
             self.update_data(user_id, group_id)
-            if debread < 0:
-                return f"吃坏肚子了喵！\n 面包数量减少了{abs(debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
-            return f"成功吃到面包了喵！\n 吃掉了{abs(debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+            if res == "badluck":
+                return f"吃坏肚子了喵！\n 面包数量减少了{abs(self.debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+            if res == "bestluck":
+                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+            return f"成功吃到面包了喵！\n 吃掉了{abs(self.debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
         else:
             debread = random.randint(1, self.count_of_bread)
             self.count_of_bread -= debread
-            self.level += debread / 100
+            self.level += debread / 10
             self.update_data(user_id, group_id)
-            return f"成功吃到面包了喵！\n 吃掉了{debread} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+            return f"成功吃到面包了喵！\n 吃掉了{debread} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{debread/10} 级\n 当前等级：{math.floor(self.level)} 级"
 
     
     
