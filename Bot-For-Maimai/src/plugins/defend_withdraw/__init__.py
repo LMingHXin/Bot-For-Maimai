@@ -21,7 +21,7 @@ async def _(bot: Bot, event: GroupRecallNoticeEvent, state: T_State):
     if event.group_id in config.access_groups: # type: ignore
         mid = event.message_id
         response = await bot.get_msg(message_id = mid)
-        print(response['message'])
+        print(response)
         print(1)
         await bot.send_group_msg(
             group_id=event.group_id,
