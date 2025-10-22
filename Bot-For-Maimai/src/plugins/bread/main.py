@@ -22,6 +22,7 @@ class base():
                 self.level, # type: ignore
                 user_id,
                 group_id,
+                self.last_eat_time
             )
         self.target_bread = None
     
