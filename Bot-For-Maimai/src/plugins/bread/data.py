@@ -9,12 +9,14 @@ class data():
                     "count_of_bread": int,
                     "Is_bread_protected": bool,
                     "level": int,
+                    "Last_eat_time": str
                 }
             }
         }'''
         self.count_of_bread: int
         self.Is_bread_protected: bool
         self.level: float
+        self.last_eat_time: str
         
     def get_user_data(self, user_id: int, group_id: str) -> bool:
         with open("/home/sa/bread_data.json", "r", encoding="utf-8") as f:
@@ -22,12 +24,13 @@ class data():
         try:
             self.count_of_bread = self.user_data[group_id][str(user_id)]["count_of_bread"]
             self.Is_bread_protected = self.user_data[group_id][str(user_id)]["Is_bread_protected"]
-            self.level = self.user_data[group_id][str(user_id)]["level"]   
+            self.level = self.user_data[group_id][str(user_id)]["level"]
+            self.last_eat_time = self.user_data[group_id][str(user_id)]["Last_eat_time"]   
             return True
         except:
             return False
     
-    def update_user_data(self, count_of_bread: int, Is_bread_protected: bool, level: int, user_id: int, group_id: str) -> None:
+    def update_user_data(self, count_of_bread: int, Is_bread_protected: bool, level: int, user_id: int, group_id: str, last_eat_time: str) -> None:
         with open("/home/sa/bread_data.json", "w", encoding="utf-8") as f:
             if group_id not in self.user_data.keys():
                 self.user_data[group_id] = {}
@@ -35,11 +38,13 @@ class data():
                 self.user_data[group_id][str(user_id)] = {"count_of_bread": count_of_bread,  
                                                         "Is_bread_protected": Is_bread_protected,
                                                         "level": level,
+                                                        "Last_eat_time": last_eat_time
                                                        }
             else:
                 self.user_data[group_id][str(user_id)]["count_of_bread"] = count_of_bread
                 self.user_data[group_id][str(user_id)]["Is_bread_protected"] = Is_bread_protected
                 self.user_data[group_id][str(user_id)]["level"] = level
+                self.user_data[group_id][str(user_id)]["Last_eat_time"] = last_eat_time
             json.dump(self.user_data, f, ensure_ascii=False, indent=4)
     
     def get_user_list(self, group_id: str) -> list:

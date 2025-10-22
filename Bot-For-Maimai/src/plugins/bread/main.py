@@ -1,5 +1,5 @@
 from .data import Data
-import random, math
+import random, math, time
 MAX_LEVEL = 20
 
 class base():
@@ -9,11 +9,13 @@ class base():
             self.count_of_bread = Data.count_of_bread
             self.Is_bread_protected = Data.Is_bread_protected
             self.level = Data.level
+            self.last_eat_time = Data.last_eat_time
         else:
             self.count_of_bread = 0
             self.Is_bread_protected = False
             self.level = 1.0
             self.bind_group = str(group_id)
+            self.last_eat_time = ""
             Data.update_user_data(
                 self.count_of_bread,
                 self.Is_bread_protected,
@@ -30,6 +32,7 @@ class base():
             self.level, # type: ignore
             user_id,
             group_id,
+            self.last_eat_time
         )
         
 
@@ -129,31 +132,43 @@ class bread(base):
             return f"杂鱼~你连面包都没有还想升级喵！"
         if self.level >= MAX_LEVEL:
             return f"你已经满级了喵！不能再升级了喵！"
+        runtime = time.time()
+        if self.last_eat_time == "":
+            self.last_eat_time = str(runtime)
+        else:
+            last_time = float(self.last_eat_time)
+            if runtime - last_time < 3600:
+                next_eat = 3600 - (runtime - last_time)
+                minutes = math.floor(next_eat / 60)
+                seconds = math.floor(next_eat % 60)
+                return f"距离下一次吃面包还有{minutes}分{seconds}秒喵！"
+            else:
+                self.last_eat_time = str(runtime)
         if self.level >= 10:
             self.debread = random.randint(1, self.count_of_bread)
             self.count_of_bread -= abs(self.debread)
             res = self.luck_eat_bread()
-            self.level += self.debread / 200
+            self.level += abs(self.debread) / 200
             if self.count_of_bread < 0:
                 self.count_of_bread = 0
             self.update_data(user_id, group_id)
             if res == "badluck":
                 return f"吃坏肚子了喵！\n 面包数量减少了{abs(self.debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
             if  res == "bestluck":
-                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
+                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{abs(self.debread)/200} 级\n 当前等级：{math.floor(self.level)} 级"
             return f"成功吃到面包了喵！\n 吃掉了{abs(self.debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/200} 级\n 当前等级：{math.floor(self.level)} 级"
         if self.level >= 5:
-            self.debread = random.randint(-3, self.count_of_bread)
+            self.debread = random.randint(-1, self.count_of_bread)
             self.count_of_bread -= abs(self.debread)
             res = self.luck_eat_bread()
-            self.level += self.debread / 100
+            self.level += abs(self.debread) / 100
             if self.count_of_bread < 0:
                 self.count_of_bread = 0
             self.update_data(user_id, group_id)
             if res == "badluck":
                 return f"吃坏肚子了喵！\n 面包数量减少了{abs(self.debread)} 个喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
             if res == "bestluck":
-                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
+                return f"运气爆棚喵！获得了双倍等级喵！\n 吃掉了{abs(self.debread/2)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{abs(self.debread)/100} 级\n 当前等级：{math.floor(self.level)} 级"
             return f"成功吃到面包了喵！\n 吃掉了{abs(self.debread)} 个面包喵！\n 当前面包数量：{self.count_of_bread} 个喵！\n 等级变化：{self.debread/100} 级\n 当前等级：{math.floor(self.level)} 级"
         else:
             debread = random.randint(1, self.count_of_bread)
