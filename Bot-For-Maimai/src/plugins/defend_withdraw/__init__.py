@@ -14,7 +14,7 @@ __plugin_meta__ = PluginMetadata(
 
 config = get_plugin_config(Config)
 
-defend_withdraw = on_notice()
+defend_withdraw = on_notice(block=False, priority=10)
 
 @defend_withdraw.handle()
 async def _(bot: Bot, event: GroupRecallNoticeEvent, state: T_State):
