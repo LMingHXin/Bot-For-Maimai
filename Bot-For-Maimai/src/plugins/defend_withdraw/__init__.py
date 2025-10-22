@@ -26,6 +26,7 @@ async def _(bot: Bot, event: GroupRecallNoticeEvent, state: T_State):
         await bot.send_group_msg(
             group_id=event.group_id,
             message=Message(f"检测到撤回消息：\n发送者：{event.user_id}\n消息ID：{mid}\n消息内容：{response['message']}"),
+            auto_escape=False
         )
     else: 
         logger.info(f"群号 {event.group_id} 不在可使用防撤回功能的列表中，忽略该撤回事件。")
