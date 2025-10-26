@@ -29,7 +29,7 @@ class CheckInData:
             self.data = json.load(f)
         key = (self.usr_id, self.group_id)
         if key not in self.data:
-            self.data[key] = self.timestamp
+            self.data[key] = 0
         return self.data[key]
     
     def update_check_in(self):
