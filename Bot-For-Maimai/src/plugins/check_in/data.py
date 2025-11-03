@@ -27,7 +27,7 @@ class CheckInData:
         """Retrieve or create a Time object for the given user and group."""
         with open("/home/sa/check_in_data.json", "r") as f:
             self.data = json.load(f)
-        key = [self.usr_id, self.group_id]
+        key = (self.usr_id, self.group_id)
         if key not in self.data:
             self.data[key] = 0
         return self.data[key]
@@ -37,7 +37,7 @@ class CheckInData:
         with open("/home/sa/check_in_data.json", "r") as f:
             self.data = json.load(f)
         t = Time(self.usr_id, self.group_id)
-        key = [self.usr_id, self.group_id]
+        key = (self.usr_id, self.group_id)
         if key in self.data:
             self.data[key] = self.timestamp
         else:
