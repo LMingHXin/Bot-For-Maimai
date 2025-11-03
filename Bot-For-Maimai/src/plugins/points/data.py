@@ -14,10 +14,10 @@ class PointsData():
             self.data = json.load(f)
         with open("/home/sa/bread_data.json", "r") as f:
             bread_data = json.load(f)
-        if str(self.usr_id) not in bread_data[group_id].keys(): # type: ignore
+        if str(self.usr_id) not in bread_data[self.group_id].keys(): # type: ignore
             raw = 1
         else:
-            raw = 1 + bread_data[group_id][str(self.usr_id)]["level"]/20 # type: ignore
+            raw = 1 + bread_data[self.group_id][str(self.usr_id)]["level"]/20 # type: ignore
         key = (self.usr_id, self.group_id)
         if key in self.data:
             self.data[key] += points*raw
