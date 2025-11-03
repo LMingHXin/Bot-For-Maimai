@@ -28,7 +28,8 @@ class CheckInData:
         with open("/home/sa/check_in_data.json", "r") as f:
             self.data = json.load(f)
         key = (self.usr_id, self.group_id)
-        if str(key) not in self.data:
+        key = str(key)
+        if key not in self.data:
             self.data[key] = 0
         return self.data[key]
     
@@ -38,7 +39,8 @@ class CheckInData:
             self.data = json.load(f)
         t = Time(self.usr_id, self.group_id)
         key = (self.usr_id, self.group_id)
-        if str(key) in self.data:
+        key = str(key)
+        if key in self.data:
             self.data[key] = self.timestamp
         else:
             self.data[key] = self.timestamp
