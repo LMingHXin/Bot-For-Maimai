@@ -16,6 +16,7 @@ class PointsData():
         with open("/home/sa/bread_data.json", "r") as f:
             bread_data = json.load(f)
         print(bread_data)
+        self.group_id = str(self.group_id)
         if str(self.usr_id) not in bread_data[self.group_id].keys(): # type: ignore
             raw = 1
         else:
