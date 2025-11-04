@@ -9,11 +9,13 @@ class PointsData():
         self.data = {}
         
     def update_points(self, points: int):
+        bread_data = {}
         """Update the points for the given user and group."""
         with open("/home/sa/points_data.json", "r") as f:
             self.data = json.load(f)
         with open("/home/sa/bread_data.json", "r") as f:
             bread_data = json.load(f)
+        print(bread_data)
         if str(self.usr_id) not in bread_data[self.group_id].keys(): # type: ignore
             raw = 1
         else:
