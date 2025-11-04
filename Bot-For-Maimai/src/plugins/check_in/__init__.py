@@ -33,6 +33,6 @@ async def handle_check_in(bot: Bot, event: Event, state: T_State):
         await check_in.finish(f"你今天已经签到过了哦~ 上次签到时间：{formatted_time}")
     else:
         points_earned = random.randint(1, 10)
-        ckid.update_check_in()
         point.update_points(points_earned)
+        ckid.update_check_in()
         await check_in.finish(f"签到成功！恭喜获得{points_earned}点基础积分！\n您当前总积分为：{point.get_points():.2f}点！")
