@@ -31,10 +31,6 @@ async def handle_check_in(bot: Bot, event: Event, state: T_State):
     if t.check_time():
         last_check_in_time = time.localtime(ckid.get_user_data())
         formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", last_check_in_time)
-        await bot.send_group_msg(
-            group_id=group_id,
-            message=f"你今天已经签到过了哦~ 上次签到时间：{formatted_time}"
-        )
         await check_in.finish(f"你今天已经签到过了哦~ 上次签到时间：{formatted_time}", reply_message = True)
     else:
         points_earned = random.randint(1, 10)
