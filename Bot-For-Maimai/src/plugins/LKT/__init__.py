@@ -24,7 +24,7 @@ join = on_command("join_ktt", priority=5, block=False, aliases={"加入三国杀
 async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
     uid = event.get_user_id()
     gid = event.group_id # type: ignore
-    main_step = stream.Main_step(uid, gid)
+    main_step = stream.Main_step(str(uid), str(gid))
     main_step.create()
     main_step.gather()
     state["room_token"] = main_step.room_token
