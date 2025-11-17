@@ -29,3 +29,4 @@ async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = C
     main_step.gather()
     state["room_token"] = main_step.room_token
     await bot.send_private_msg(user_id=int(uid), message=f"创建成功~\n房间TOKEN为{main_step.room_token}\n请复制token给群聊以便其他玩家加入~")
+    await start.send(group_id=int(gid), message=f"创建了三国杀房间~\n已经私信通知他力！他将复制TOKEN给大家加入！", at_sender=True)
