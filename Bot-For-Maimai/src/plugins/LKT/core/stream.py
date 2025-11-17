@@ -10,7 +10,11 @@ class Main_step:
         
     def create(self):  #STEP0-1:create room
         self.room_token = self.room_api.room.get_token()
-        self.room_id = self.room_api.room.get_id()
+        try:
+            self.room_id = self.room_api.room.get_id()
+        except Exception as e:
+            logger.error(f"获取房间ID失败：{e}")
+            self.room_id = 1
         self.room_name = f"三国杀房间{self.room_id}"
         self.room_api.create_room(self.room_name)
         
