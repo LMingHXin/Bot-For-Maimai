@@ -1,76 +1,53 @@
 from ...room import Room
+from nonebot.log import logger
+from typing import Dict, Any
 import json
 
-class RoomData(): # 总房间操作，将 room.py 中的 Room 类进行封装
-    def __init__(self, user_id: str, group_id: str):
-        self.room = Room(user_id, group_id)
+class Room_api(): # 房间数据接口封装
+    def __init__(self, group_id: str, user_id: str):
+        self.room = Room(group_id, user_id)
         
-    def create_room(self, room_name: str) -> None:
+    def __str__(self) -> str:
+        return self.room.room_token
+        
+    def create_room(self,room_name): # 创建房间
+        self.room.download_room_data()
         self.room.create_room(room_name)
+        self.room.update_room_data()
         
-    def join_room(self) -> str:
-        return self.room.join_room()
-    
-    def leave_room(self) -> str:
-        return self.room.leave_room()
-    
-    def change_room_status(self) -> None:
-        self.room.toggle_room_status()
-        
-    def get_room_id(self) -> int:
-        return self.room.get_room_id()
-        
-class ControllerRoomData():# 针对局内的房间操作
-    def __init__(self, group_id: str, room_id: int): # 根据群号和房间号初始化房间数据
-        self.group_id = group_id
-        self.room_id = room_id
-        with open("/home/sa/room.json", "r", encoding="utf-8") as f:
-            room_data = json.load(f)
-        room_data_list = room_data.get(group_id, None)
-        self.room_data = room_data_list if room_data_list and room_data_list["room_id"] == room_id else None
-        if not self.room_data:
-            raise ValueError("Room not found")
-        self.room_controller = self.room_data["user_ids"][0]
-        self.room_step = 0
-        self.room_players = self.room_data["user_ids"]
-        
-    def set_room_step(self, step: int) -> None: # 根据房间当前step，将房间上锁，即禁止其它玩家加入
-        self.room_step = step
-        if step == 1:
-            roomdata = RoomData(self.room_controller, self.group_id)
-            roomdata.change_room_status()
-    
-    def get_room_step(self) -> int: # 获取当前房间step
-        return self.room_step
-        
-    def update_room(self) -> None: # 更新房间数据到文件
-        with open("/home/sa/room.json", "r", encoding="utf-8") as f:
-            room_data = json.load(f)
-        room_data[self.group_id] = self.room_data
-        with open("/home/sa/room.json", "w", encoding="utf-8") as f:
-            json.dump(room_data, f, ensure_ascii=False, indent=4)
-            
-    def del_room(self, user_id: str) -> str: # 解散房间，只有房主可以解散
-        if user_id == self.room_controller:
-            roomdata = RoomData(self.room_controller, self.group_id)
-            roomdata.leave_room()
-            with open("/home/sa/room.json", "r", encoding="utf-8") as f:
-                room_data = json.load(f)
-            if self.group_id in room_data:
-                del room_data[self.group_id]
-            with open("/home/sa/room.json", "w", encoding="utf-8") as f:
-                json.dump(room_data, f, ensure_ascii=False, indent=4)
-            return f"房间已解散！"
+    def join_room(self, room_token: str, user_id: str) -> bool: # 加入房间
+        self.room.download_room_data()
+        if room_token in self.room.room_data.keys():
+            if user_id not in self.room.room_data[room_token]["user_ids"]: # type: ignore
+                self.room.room_data[room_token]["user_ids"].append(user_id) # type: ignore
+                self.room.update_room_data()
+                return True
+            else:
+                return False
         else:
-            return f"只有房主才能解散房间！"
-    
-    def Isplayer_in_room(self, user_id: str): #判断玩家是否在房间内，影响该玩家是否能够创建房间或加入其它房间
-        with open("/home/sa/room.json", "r", encoding="utf-8") as f:
-            room_data = json.load(f)
-        room_data_list = room_data.get(self.group_id, None)
-        if room_data_list and room_data_list["room_id"] == self.room_id:
-            return user_id in room_data_list["user_ids"]
-    
+            return False
+
+class Room_data(): # 房间数据处理封装, 用于对局内获取房间各项数据
+    def __init__(self, room_token: str):
+        self.room_token = room_token
+        self.room_data = {}
+        self.load_room_data()
         
+    def load_room_data(self): # 加载房间数据
+        all_room_data: Dict[str, Any] = {}
+        with open("/home/sa/room_data.json", "r") as f:
+            all_room_data = json.load(f)
+        if self.room_token in all_room_data.keys():
+            self.room_data = all_room_data[self.room_token]
+        else:
+            logger.error(f"未能找到TOKEN为{self.room_token}的房间数据")
+            return
+        self.user_ids = self.room_data.get("user_ids", [])
+        self.group_id = self.room_data.get("group_id", "")
+        self.status = self.room_data.get("status", False)
+        self.ID = self.room_data.get("ID", -1)
+        self.room_name = self.room_data.get("room_name", "")
+        logger.info(f"成功获取TOKEN为{self.room_token}的房间数据: {self.room_data}")
+        self.room_step = 0  # 房间当前步骤，初始为0
+        logger.info(f"房间{self.room_token}当前步骤成功设定为{self.room_step}")
         
-    
