@@ -26,4 +26,4 @@ async def handle_room_info(bot: Bot, event: Event, state: T_State, msg: Message 
 
     room = Room(group_id, user_id)
     info = room.get_room_info()
-    await get_room.finish(info, reply_message=True)
+    await get_room.finish(str(info), reply_message=True)
