@@ -53,5 +53,6 @@ class Room(): # 房间类封装，用于创建与管理房间
             json.dump(self.room_data, f)
         logger.success(f"成功更新房间数据至本地存储")
     
-    def get_room_info(self) -> Dict[str, Union[str, List[str], bool, int]]:
-        return self.room_data.get(self.room_token, {})
+    def get_room_info(self):
+        self.download_room_data()
+        return self.room_data
