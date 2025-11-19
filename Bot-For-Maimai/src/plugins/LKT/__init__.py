@@ -2,6 +2,7 @@ from nonebot import get_plugin_config, on_command, on_message
 from nonebot.plugin import PluginMetadata
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import Message, Event, Bot
+from nonebot_plugin_alconna.uniseg import message_recall
 from nonebot.rule import to_me
 from nonebot.params import CommandArg
 
@@ -31,3 +32,19 @@ async def handle_gather(bot: Bot, event: Event, state: T_State, args: Message = 
     state["room_token"] = main_step.room_token
     await bot.send_private_msg(user_id=int(uid), message=f"创建成功~\n房间TOKEN为{main_step.room_token}\n请复制token给群聊以便其他玩家加入~")
     await gather.send(group_id=int(gid), message=f"创建了三国杀房间~\n已经私信通知他力！他将复制TOKEN给大家加入！", at_sender=True)
+    
+@join.handle()
+async def handle_join(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
+    uid = event.get_user_id()
+    gid = event.group_id # type: ignore
+    room_token = args.extract_plain_text().strip()
+    if not room_token:
+        await join.finish("请提供房间TOKEN以加入房间~", at_sender=True)
+    room_api = stream.Main_step(str(uid), str(gid)).room_api
+    success = room_api.join_room(room_token, str(uid))
+    if success:
+        id = str(event.message_id)  # type: ignore
+        await message_recall(id)
+        await join.send(group_id=int(gid), message=f"玩家{uid}加入了房间~", at_sender=True)
+    else:
+        await join.finish("加入房间失败，请检查TOKEN是否正确或您是否已在房间中~", at_sender=True)
