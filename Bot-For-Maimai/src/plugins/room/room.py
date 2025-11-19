@@ -40,7 +40,7 @@ class Room(): # 房间类封装，用于创建与管理房间
             "room_name":room_name
         }
         self.room_id += 1
-        logger.info(f"成功创建房间，房间TOKEN为{self.room_token}，房间ID为{self.room_id-1}")
+        logger.success(f"成功创建房间，房间TOKEN为{self.room_token}，房间ID为{self.room_id-1}")
         
     def get_token(self) -> str: # 获取房间token
         return self.room_token
@@ -51,4 +51,4 @@ class Room(): # 房间类封装，用于创建与管理房间
     def update_room_data(self): # 更新内存数据到本地存储
         with open("/home/sa/room_data.json", "w") as f:
             json.dump(self.room_data, f)
-        logger.info(f"成功更新房间数据至本地存储")
+        logger.success(f"成功更新房间数据至本地存储")
