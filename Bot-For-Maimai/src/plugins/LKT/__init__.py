@@ -60,7 +60,7 @@ async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = Co
     if not room_token:
         await quit.finish("请提供房间TOKEN以退出房间~", at_sender=True)
     room_api = stream.Main_step(str(uid), str(gid)).room_api
-    re = room_api.room.quit_room(room_token, str(uid))
+    re = room_api.quit_room(room_token, str(uid))
     id = str(event.message_id)  # type: ignore
     await message_recall(id)
     await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~", at_sender=True)
