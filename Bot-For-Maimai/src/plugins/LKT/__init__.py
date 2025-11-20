@@ -21,13 +21,16 @@ config = get_plugin_config(Config)
 gather = on_command("ktt", priority=5, block=False, aliases={"开三国杀", "开始三国杀"}, rule=to_me())  #开始三国杀
 start = on_command("start_ktt", priority=5, block=False, aliases={"开始游戏", "开始ktt"}, rule=to_me())  #开始游戏
 join = on_command("join_ktt", priority=5, block=False, aliases={"加入三国杀", "加入ktt"}, rule=to_me())  #加入三国杀
+quit = on_command("quit_ktt", priority=5, block=False, aliases={"退出三国杀", "退出ktt"}, rule=to_me())  #退出三国杀
 
 @gather.handle()
 async def handle_gather(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
     uid = event.get_user_id()
     gid = event.group_id # type: ignore
     main_step = stream.Main_step(str(uid), str(gid))
-    main_step.create()
+    re = main_step.create()
+    if re == "FAILED":
+        await gather.finish("房间创建失败，您可能已在该群创建房间或加入房间\n每人只能在一个房间中哦，不要贪心哦~", reply=True)
     main_step.gather()
     state["room_token"] = main_step.room_token
     await bot.send_private_msg(user_id=int(uid), message=f"创建成功~\n房间TOKEN为{main_step.room_token}\n请复制token给群聊以便其他玩家加入~")
@@ -48,3 +51,18 @@ async def handle_join(bot: Bot, event: Event, state: T_State, args: Message = Co
         await join.send(group_id=int(gid), message=f"玩家{uid}加入了房间~", at_sender=True)
     else:
         await join.finish("加入房间失败，请检查TOKEN是否正确或您是否已在房间中~", at_sender=True)
+        
+@quit.handle()
+async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
+    uid = event.get_user_id()
+    gid = event.group_id # type: ignore
+    room_token = args.extract_plain_text().strip()
+    if not room_token:
+        await quit.finish("请提供房间TOKEN以退出房间~", at_sender=True)
+    room_api = stream.Main_step(str(uid), str(gid)).room_api
+    re = room_api.room.quit_room(room_token, str(uid))
+    id = str(event.message_id)  # type: ignore
+    await message_recall(id)
+    await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~", at_sender=True)
+    if re == "INVALID_ROOM":
+        await quit.send(group_id=int(gid), message=f"房间{room_token}已无玩家，房间已解散~", at_sender=True)

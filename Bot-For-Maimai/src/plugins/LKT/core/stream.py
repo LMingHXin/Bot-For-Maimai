@@ -16,7 +16,14 @@ class Main_step:
             logger.error(f"获取房间ID失败：{e}")
             self.room_id = 1
         self.room_name = f"三国杀房间{self.room_id}"
-        self.room_api.create_room(self.room_name)
+        re = self.room_api.create_room(self.room_name)
+        if re == "FAILED":
+            logger.error("房间创建失败")
+            return "FAILED"
+        
+    def quitr(self):  #QUIT: quit room
+        re = self.room_api.quit_room(self.room_token, self.user_id)
+        return re
         
     def gather(self):  #STEP0-2:gather players
         self.room_api.join_room(self.room_token, self.user_id)

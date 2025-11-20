@@ -32,6 +32,10 @@ class Room(): # 房间类封装，用于创建与管理房间
         logger.info(f"成功下载房间数据，当前房间总数为{self.room_id-1}，下一个房间ID为{self.room_id}")
                  
     def create_room(self, room_name: str): # 创建房间，同时更新room_id
+        for i in self.room_data.keys():
+            if self.room_data[i]["group_id"] == self.group_id and self.user_id in self.room_data[i]["user_ids"]: # type: ignore
+                logger.warning(f"用户{self.user_id}在群{self.group_id}中已创建房间，无法重复创建")
+                return "ERROR"
         self.room_data[self.room_token] = {
             "group_id":self.group_id,
             "user_ids":[self.user_id],
@@ -41,6 +45,13 @@ class Room(): # 房间类封装，用于创建与管理房间
         }
         self.room_id += 1
         logger.success(f"成功创建房间，房间TOKEN为{self.room_token}，房间ID为{self.room_id-1}")
+        
+    def quit_room(self, room_token: str, user_id: str): # 退出房间
+        self.room_data[room_token]["user_ids"].remove(user_id)  # type: ignore
+        if len(self.room_data[room_token]["user_ids"]) == 0:  # type: ignore
+            del self.room_data[room_token]
+            logger.info(f"房间{room_token}已无玩家，房间已解散")
+            return "INVALID_ROOM"
         
     def get_token(self) -> str: # 获取房间token
         return self.room_token

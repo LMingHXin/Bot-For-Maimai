@@ -12,7 +12,9 @@ class Room_api(): # 房间数据接口封装
         
     def create_room(self,room_name): # 创建房间
         self.room.download_room_data()
-        self.room.create_room(room_name)
+        re = self.room.create_room(room_name)
+        if re == "ERROR":
+            return "FAILED"
         self.room.update_room_data()
         
     def join_room(self, room_token: str, user_id: str) -> bool: # 加入房间
@@ -26,6 +28,12 @@ class Room_api(): # 房间数据接口封装
                 return False
         else:
             return False
+    
+    def quit_room(self, room_token: str, user_id: str): # 退出房间
+        self.room.download_room_data()
+        re = self.room.quit_room(room_token, user_id)
+        self.room.update_room_data()
+        return re
 
 class Room_data(): # 房间数据处理封装, 用于对局内获取房间各项数据
     def __init__(self, room_token: str):
