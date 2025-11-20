@@ -46,7 +46,7 @@ class Room(): # 房间类封装，用于创建与管理房间
         return self.room_token
     
     def get_id(self) -> int: # 获取房间ID
-        return self.room_data[self.room_token]["ID"] # type: ignore
+        return len(self.room_data) # type: ignore
         
     def update_room_data(self): # 更新内存数据到本地存储
         with open("/home/sa/room_data.json", "w") as f:
