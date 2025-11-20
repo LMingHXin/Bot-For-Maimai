@@ -47,6 +47,9 @@ class Room(): # 房间类封装，用于创建与管理房间
         logger.success(f"成功创建房间，房间TOKEN为{self.room_token}，房间ID为{self.room_id-1}")
         
     def quit_room(self, room_token: str, user_id: str): # 退出房间
+        if self.room_data[room_token]["status"] == False:
+            logger.warning(f"房间{room_token}已关闭，无法退出")
+            return "ROOM_CLOSED"
         self.room_data[room_token]["user_ids"].remove(user_id)  # type: ignore
         if len(self.room_data[room_token]["user_ids"]) == 0:  # type: ignore
             del self.room_data[room_token]

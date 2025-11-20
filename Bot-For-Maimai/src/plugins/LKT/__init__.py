@@ -61,6 +61,8 @@ async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = Co
         await quit.finish("请提供房间TOKEN以退出房间~", at_sender=True)
     room_api = stream.Main_step(str(uid), str(gid)).room_api
     re = room_api.quit_room(room_token, str(uid))
+    if re == "ROOM_CLOSED":
+        await quit.finish("房间已关闭，无法退出~", at_sender=True)
     id = str(event.message_id)  # type: ignore
     await message_recall(id)
     await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~", at_sender=True)
@@ -73,15 +75,15 @@ async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = C
     gid = event.group_id # type: ignore
     room_token = args.extract_plain_text().strip()
     if not room_token:
-        await start.finish("请提供正确的房间TOKEN以开始游戏~", at_sender=True)
+        await start.finish("请提供正确的房间TOKEN以开始游戏~")
     main_step = stream.Main_step(str(uid), str(gid))
     main_step.room_token = room_token
     confirmed = main_step.confirm()
     if not confirmed:
-        await start.finish("房间玩家不足，无法开始游戏~", at_sender=True)
+        await start.finish("无法开始游戏~可能是以下三个原因之一\n1. 玩家不足，至少需要3名玩家才能开始游戏\n2. 玩家过多，建议控制在10人以内\n3. 只有房主可以确认开始游戏~", at_sender=True)
     assigned_roles = main_step.divide()
     for user_id, role in assigned_roles.items():
         await bot.send_private_msg(user_id=int(user_id), message=f"游戏开始啦！\n您的身份是：{role}，请牢记您的身份哦~")
         if role == "主公":
-            await start.send(group_id=int(gid), message=f"游戏开始啦！\n玩家{user_id}是本局的主公!!", at_sender=True)
+            await start.send(group_id=int(gid), message=f"游戏开始啦！\n玩家{user_id}是本局的主公!!")
     await start.finish("角色分配完毕，已经私信通知\n，游戏正式开始！请各位玩家开始选择武将")
