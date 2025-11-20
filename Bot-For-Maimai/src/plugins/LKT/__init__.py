@@ -48,7 +48,7 @@ async def handle_join(bot: Bot, event: Event, state: T_State, args: Message = Co
     if success:
         id = str(event.message_id)  # type: ignore
         await message_recall(id)
-        await join.send(group_id=int(gid), message=f"玩家{uid}加入了房间~", at_sender=True)
+        await join.send(group_id=int(gid), message=f"加入了房间~", at_sender=True)
     else:
         await join.finish("加入房间失败，请检查TOKEN是否正确或您是否已在房间中~", at_sender=True)
         
@@ -65,9 +65,9 @@ async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = Co
         await quit.finish("房间已关闭，无法退出~", at_sender=True)
     id = str(event.message_id)  # type: ignore
     await message_recall(id)
-    await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~", at_sender=True)
+    await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~")
     if re == "INVALID_ROOM":
-        await quit.send(group_id=int(gid), message=f"房间{room_token}已无玩家，房间已解散~", at_sender=True)
+        await quit.send(group_id=int(gid), message=f"房间{room_token}已无玩家，房间已解散~")
         
 @start.handle()
 async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
