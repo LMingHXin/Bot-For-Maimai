@@ -17,7 +17,7 @@ __plugin_meta__ = PluginMetadata(
 
 config = get_plugin_config(Config)
 
-get_room = on_command("房间信息", rule=to_me(), priority=5, block=True, aliases={"查看房间, roominfo, ri"})
+get_room = on_command("房间信息", rule=to_me(), priority=5, block=True, aliases={"查看房间", "roominfo", "ri"})
 
 @get_room.handle()
 async def handle_room_info(bot: Bot, event: Event, state: T_State, msg: Message = CommandArg()):
