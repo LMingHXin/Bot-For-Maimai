@@ -66,3 +66,22 @@ async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = Co
     await quit.send(group_id=int(gid), message=f"玩家{uid}退出了房间~", at_sender=True)
     if re == "INVALID_ROOM":
         await quit.send(group_id=int(gid), message=f"房间{room_token}已无玩家，房间已解散~", at_sender=True)
+        
+@start.handle()
+async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
+    uid = event.get_user_id()
+    gid = event.group_id # type: ignore
+    room_token = args.extract_plain_text().strip()
+    if not room_token:
+        await start.finish("请提供正确的房间TOKEN以开始游戏~", at_sender=True)
+    main_step = stream.Main_step(str(uid), str(gid))
+    main_step.room_token = room_token
+    confirmed = main_step.confirm()
+    if not confirmed:
+        await start.finish("房间玩家不足，无法开始游戏~", at_sender=True)
+    assigned_roles = main_step.divide()
+    for user_id, role in assigned_roles.items():
+        await bot.send_private_msg(user_id=int(user_id), message=f"游戏开始啦！\n您的身份是：{role}，请牢记您的身份哦~")
+        if role == "主公":
+            await start.send(group_id=int(gid), message=f"游戏开始啦！\n玩家{user_id}是本局的主公!!", at_sender=True)
+    await start.finish("角色分配完毕，已经私信通知\n，游戏正式开始！请各位玩家开始选择武将")
