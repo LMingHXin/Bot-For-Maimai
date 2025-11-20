@@ -50,7 +50,7 @@ async def handle_join(bot: Bot, event: Event, state: T_State, args: Message = Co
         await message_recall(id)
         await join.send(group_id=int(gid), message=f"加入了房间~", at_sender=True)
     else:
-        await join.finish("加入房间失败，请检查TOKEN是否正确或您是否已在房间中~", at_sender=True)
+        await join.finish("加入房间失败，请检查TOKEN是否正确或您是否已在房间中~\n当然，这个房间可能已经开始游戏了，无法加入新的玩家", at_sender=True)
         
 @quit.handle()
 async def handle_quit(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
@@ -86,4 +86,4 @@ async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = C
         await bot.send_private_msg(user_id=int(user_id), message=f"游戏开始啦！\n您的身份是：{role}，请牢记您的身份哦~")
         if role == "主公":
             await start.send(group_id=int(gid), message=f"游戏开始啦！\n玩家{user_id}是本局的主公!!")
-    await start.finish("角色分配完毕，已经私信通知\n，游戏正式开始！请各位玩家开始选择武将")
+    await start.finish("角色分配完毕，已经私信通知\n游戏正式开始！请各位玩家开始选择武将")

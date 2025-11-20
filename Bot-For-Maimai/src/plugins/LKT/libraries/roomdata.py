@@ -19,7 +19,7 @@ class Room_api(): # 房间数据接口封装
         
     def join_room(self, room_token: str, user_id: str) -> bool: # 加入房间
         self.room.download_room_data()
-        if room_token in self.room.room_data.keys():
+        if room_token in self.room.room_data.keys() and self.room.room_data[room_token]["status"] == True:  # type: ignore
             if user_id not in self.room.room_data[room_token]["user_ids"]: # type: ignore
                 self.room.room_data[room_token]["user_ids"].append(user_id) # type: ignore
                 self.room.update_room_data()
@@ -28,6 +28,11 @@ class Room_api(): # 房间数据接口封装
                 return False
         else:
             return False
+        
+    def lock_room(self, room_token: str): # 锁定房间
+        self.room.download_room_data()
+        self.room.room_data[room_token]["status"] = False  # type: ignore
+        self.room.update_room_data()
     
     def quit_room(self, room_token: str, user_id: str): # 退出房间
         self.room.download_room_data()

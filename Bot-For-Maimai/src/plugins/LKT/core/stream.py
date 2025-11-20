@@ -42,6 +42,8 @@ class Main_step:
         room.room_step = 1  # Update room step to 1
         self.room = room
         logger.info(f"房间{self.room_token}玩家确认完毕，当前玩家列表：{self.user_ids}")
+        self.room_api.lock_room(self.room_token)
+        logger.info(f"房间{self.room_token}已锁定，无法再加入新玩家, 已经在的玩家无法退出")
         return True  # Enough players to start the game
     
     def divide(self): #STEP1-2: Divide roles and load cards
