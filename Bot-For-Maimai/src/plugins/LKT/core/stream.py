@@ -31,9 +31,9 @@ class Main_step:
     def confirm(self):  #STEP1-1: Confirm players
         room = roomdata.Room_data(self.room_token)
         self.user_ids = room.user_ids
-        if len(self.user_ids) <= 2:
-            logger.error("房间玩家不足，无法开始游戏")
-            return False  # Not enough players to start the game
+     #   if len(self.user_ids) <= 2:
+        #     logger.error("房间玩家不足，无法开始游戏")
+        #     return False  # Not enough players to start the game
         if len(self.user_ids) > 10:
             logger.warning("房间玩家过多，建议控制在10人以内")
         if self.user_id not in self.user_ids or self.user_ids[0] != self.user_id:

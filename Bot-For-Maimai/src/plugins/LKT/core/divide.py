@@ -9,6 +9,19 @@ class role: #角色分配
     
     def assign_roles(self):
         idlen = len(self.user_ids)
+        if idlen == 2 : # 特殊情况：双人局，测试用
+            master_num = 1
+            loyal_num = 0
+            traitor_num = 0
+            rebel_num = 1
+            roles_list = (["主公"] * master_num +
+                        ["反贼"] * rebel_num +
+                        ["忠臣"] * loyal_num +
+                        ["内奸"] * traitor_num)
+            random.shuffle(roles_list)
+            self.assigned_roles = dict(zip(self.user_ids, roles_list))
+            return self.assigned_roles
+        
         if idlen < 2:
             logger.error("玩家数量不足，无法分配角色")
         
