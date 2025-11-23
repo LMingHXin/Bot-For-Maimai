@@ -35,9 +35,10 @@ async def handle_seek(bot: Bot, event: Event, state: T_State, args: Message = Co
         await seek_room.finish("当前群内暂无三国杀房间~", at_sender=True)
     print(active_rooms)
     msg = "当前群内的三国杀房间有：\n"
-    for data in active_rooms.values():
+    for token, data in active_rooms.items():
         status = "进行中" if not data["status"] else "等待中"
         msg += f"房间名称：{data['room_name']}\n房间状态：{status}\n当前玩家数：{len(data['user_ids'])}\n---\n"
+    await seek_room.finish(msg, reply=True)
 
 @gather.handle()
 async def handle_gather(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
