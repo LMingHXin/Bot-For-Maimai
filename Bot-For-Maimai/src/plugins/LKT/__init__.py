@@ -96,7 +96,11 @@ async def handle_start(bot: Bot, event: Event, state: T_State, args: Message = C
     main_step.room_token = room_token
     confirmed = main_step.confirm()
     if not confirmed:
-        await start.finish("无法开始游戏~可能是以下三个原因之一\n1. 玩家不足，至少需要3名玩家才能开始游戏\n2. 玩家过多，建议控制在10人以内\n3. 只有房主可以确认开始游戏~", at_sender=True)
+        await start.finish('''无法开始游戏~可能是以下四个原因之一\n
+                           1. 玩家不足，至少需要3名玩家才能开始游戏\n
+                           2. 玩家过多，建议控制在10人以内\n
+                           3. 只有房主可以确认开始游戏\n
+                           4.群内有已经开始的三国杀游戏''', at_sender=True)
     assigned_roles = main_step.divide()
     for user_id, role in assigned_roles.items():
         await bot.send_private_msg(user_id=int(user_id), message=f"游戏开始啦！\n您的身份是：{role}，请牢记您的身份哦~")

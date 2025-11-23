@@ -39,6 +39,9 @@ class Main_step:
     
     def confirm(self):  #STEP1-1: Confirm players
         room = roomdata.Room_data(self.room_token)
+        if not self.room.room_data[token]["status"] and self.room.room_data[token]["group_id"] == self.room.group_id and "三国杀" in self.room.room_data[token]["room_name"]: # type: ignore
+            logger.warning(f"群内有已经进行的三国杀游戏，无法创建新房间")
+            return False
         self.user_ids = room.user_ids
     #    if len(self.user_ids) <= 2:
         #     logger.error("房间玩家不足，无法开始游戏")
