@@ -23,6 +23,21 @@ start = on_command("start_ktt", priority=5, block=False, aliases={"开始游戏"
 join = on_command("join_ktt", priority=5, block=False, aliases={"加入三国杀", "加入ktt"}, rule=to_me())  #加入三国杀
 quit = on_command("quit_ktt", priority=5, block=False, aliases={"退出三国杀", "退出ktt"}, rule=to_me())  #退出三国杀
 choose_general = on_command("choose_general", priority=5, block=False, aliases={"选择武将"}, rule=to_me())  #选择武将
+seek_room = on_command("seek_ktt", priority=5, block=False, aliases={"查找三国杀房间", "查找ktt房间"}, rule=to_me())  #查找三国杀房间
+
+@seek_room.handle()
+async def handle_seek(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):
+    uid = event.get_user_id()
+    gid = event.group_id # type: ignore
+    room_api = stream.Main_step(str(uid), str(gid)).room_api
+    room_api.room.download_room_data()
+    active_rooms = room_api.seek_group_rooms(str(gid))
+    if not active_rooms:
+        await seek_room.finish("当前群内暂无三国杀房间~", at_sender=True)
+    msg = "当前群内的三国杀房间有：\n"
+    for token, data in active_rooms.items():
+        status = "进行中" if not data["status"] else "等待中"
+        msg += f"房间名称：{data['room_name']}\n房间状态：{status}\n当前玩家数：{len(data['user_ids'])}\n---\n"
 
 @gather.handle()
 async def handle_gather(bot: Bot, event: Event, state: T_State, args: Message = CommandArg()):

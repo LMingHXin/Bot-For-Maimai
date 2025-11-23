@@ -43,6 +43,15 @@ class Room_api(): # 房间数据接口封装
         re = self.room.quit_room(room_token, user_id)
         self.room.update_room_data()
         return re
+    
+    def seek_group_rooms(self, group_id: str) -> Dict[str, Any]: # 查找群内所有房间
+        self.room.download_room_data()
+        group_rooms = {}
+        for token, data in self.room.room_data.items():
+            if data["group_id"] == group_id:
+                group_rooms[token] = data
+        logger.info(f"成功查找群{group_id}内的所有房间，共找到{len(group_rooms)}个房间")
+        return group_rooms
 
 class Room_data(): # 房间数据处理封装, 用于对局内获取房间各项数据
     def __init__(self, room_token: str):
