@@ -53,14 +53,14 @@ class Main_step:
         logger.info(f"房间{self.room_token}玩家确认完毕，当前玩家列表：{self.user_ids}")
         self.room_api.lock_room(self.room_token)
         logger.info(f"房间{self.room_token}已锁定，无法再加入新玩家, 已经在的玩家无法退出")
-        self.format_data()
+        self.format_data() # Format room data, Finish use roomdata
         return True  # Enough players to start the game
     
     def divide(self): #STEP1-2: Divide roles and load cards
         self.divide_role = role(self.user_ids)
         self.assigned_roles = self.divide_role.assign_roles()
         self.cards = constantdata.cards.copy()
-        self.room.room_step = 2  # Update room step to 2
+        self.room_step = 2  # Update room step to 2
         return self.assigned_roles
     
     def select(self): #STEP2: select generals
