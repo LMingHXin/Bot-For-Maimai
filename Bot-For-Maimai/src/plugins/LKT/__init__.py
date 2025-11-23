@@ -33,7 +33,6 @@ async def handle_seek(bot: Bot, event: Event, state: T_State, args: Message = Co
     active_rooms = room_api.seek_group_rooms(str(gid))
     if not active_rooms:
         await seek_room.finish("当前群内暂无三国杀房间~", at_sender=True)
-    print(active_rooms)
     msg = "当前群内的三国杀房间有：\n"
     for token, data in active_rooms.items():
         status = "进行中" if not data["status"] else "等待中"
