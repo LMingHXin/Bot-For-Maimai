@@ -27,11 +27,20 @@ class Main_step:
         
     def gather(self):  #STEP0-2:gather players
         self.room_api.join_room(self.room_token, self.user_id)
+        
+    def format_data(self):
+        self.user_ids = self.room.user_ids
+        self.group_id = self.room.group_id
+        self.status = self.room.status
+        self.ID = self.room.ID
+        self.room_name = self.room.room_name
+        self.room_step = self.room.room_step
+        logger.info(f"房间{self.room_token}数据格式化完成：{self.room.__dict__}")
     
     def confirm(self):  #STEP1-1: Confirm players
         room = roomdata.Room_data(self.room_token)
         self.user_ids = room.user_ids
-     #   if len(self.user_ids) <= 2:
+    #    if len(self.user_ids) <= 2:
         #     logger.error("房间玩家不足，无法开始游戏")
         #     return False  # Not enough players to start the game
         if len(self.user_ids) > 10:
@@ -44,6 +53,7 @@ class Main_step:
         logger.info(f"房间{self.room_token}玩家确认完毕，当前玩家列表：{self.user_ids}")
         self.room_api.lock_room(self.room_token)
         logger.info(f"房间{self.room_token}已锁定，无法再加入新玩家, 已经在的玩家无法退出")
+        self.format_data()
         return True  # Enough players to start the game
     
     def divide(self): #STEP1-2: Divide roles and load cards
@@ -52,9 +62,8 @@ class Main_step:
         self.cards = constantdata.cards.copy()
         self.room.room_step = 2  # Update room step to 2
         return self.assigned_roles
-        
     
-    def step_2(self): #STEP2: select generals
+    def select(self): #STEP2: select generals
         pass
     
     def step_3(self): #STEP3: game start
