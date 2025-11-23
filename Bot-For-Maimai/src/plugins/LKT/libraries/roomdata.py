@@ -12,6 +12,10 @@ class Room_api(): # 房间数据接口封装
         
     def create_room(self,room_name): # 创建房间
         self.room.download_room_data()
+        for token in self.room.room_data.keys():
+            if not self.room.room_data[token]["status"] and self.room.room_data[token]["group_id"] == self.room.group_id and "三国杀" in self.room.room_data[token]["room_name"]: # type: ignore
+                logger.warning(f"群内有已经进行的三国杀游戏，无法创建新房间")
+                return "FAILED"
         re = self.room.create_room(room_name)
         if re == "ERROR":
             return "FAILED"

@@ -30,7 +30,7 @@ async def handle_gather(bot: Bot, event: Event, state: T_State, args: Message = 
     main_step = stream.Main_step(str(uid), str(gid))
     re = main_step.create()
     if re == "FAILED":
-        await gather.finish("房间创建失败，您可能已在该群创建房间或加入房间\n每人只能在一个房间中哦，不要贪心哦~", reply=True)
+        await gather.finish("房间创建失败，可能是以下两个原因：\n1.您以加入/创建房间，无法创建新的房间\n2.您所在的群内可能有房间正在进行三国杀游戏，请您等待结束后再创建三国杀房间", reply=True)
     main_step.gather()
     state["room_token"] = main_step.room_token
     await bot.send_private_msg(user_id=int(uid), message=f"创建成功~\n房间TOKEN为{main_step.room_token}\n请复制token给群聊以便其他玩家加入~")
